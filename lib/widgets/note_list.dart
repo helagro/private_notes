@@ -22,11 +22,11 @@ class _NoteListState extends State<NoteList> {
           itemBuilder: (context, i) {
             return Center(
                 child: Text(
-              NoteHandler().notes[i].title,
+              NoteHandler.getInstance().notes[i].title,
               style: const TextStyle(fontSize: 24),
             ));
           },
-          itemCount: NoteHandler().notes.length,
+          itemCount: NoteHandler.getInstance().notes.length,
         ),
       ),
     ));

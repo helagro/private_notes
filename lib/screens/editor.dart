@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:private_notes/widgets/editor.dart';
 import 'package:private_notes/widgets/note_list.dart';
+import 'package:private_notes/widgets/note_list_options.dart';
 
 class EditorScreen extends StatefulWidget {
   const EditorScreen({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _EditorScreenState extends State<EditorScreen> {
         children: [
           ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 340),
-              child: Column(children: const [NoteList()])),
+              child: Column(children: const [NoteListOptions(), NoteList()])),
           const EditorWidget()
         ],
       ),
