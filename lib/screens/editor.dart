@@ -10,9 +10,11 @@ class EditorScreen extends StatefulWidget{
 class _EditorScreenState extends State<EditorScreen>{
   @override
   Widget build(BuildContext context) {
-    return const Text(
+    return const Scaffold(
+      body: Text(
         'You have pushed the button this many times:',
-      );
+      ),
+    );
   }
 
 }
