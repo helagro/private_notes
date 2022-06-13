@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/widgets/editor.dart';
+
+import '../data_types/note.dart';
 
 class NoteList extends StatefulWidget {
   const NoteList({Key? key}) : super(key: key);
@@ -9,16 +10,21 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
+  List<Note> notes = List.from([Note("t1", "c1"), Note("t2", "c2")]);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
         child: SizedBox.expand(
-          child: Container(
-            color: Colors.blue,
-              child: const Text(
-          'You have pushed the button this many times:',
-              ),
-            ),
-        ));
+      child: Container(
+        color: Colors.blue,
+        child: ListView.builder(
+          itemBuilder: (context, i) {
+            return Text(notes[i].title);
+          },
+          itemCount: notes.length,
+        ),
+      ),
+    ));
   }
 }

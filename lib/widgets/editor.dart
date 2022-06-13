@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EditorWidget extends StatefulWidget {
   const EditorWidget({Key? key}) : super(key: key);
@@ -13,9 +14,18 @@ class _EditorWidgetState extends State<EditorWidget> {
     return Expanded(
         child: SizedBox.expand(
           child: Container(
+            padding: const EdgeInsets.all(30),
             color: Colors.red,
-              child: const Text(
-          'You have pushed the button this many times:',
+              child: const TextField(
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                minLines: 2,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none)
               ),
             ),
         ));
