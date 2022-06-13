@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:private_notes/widgets/editor.dart';
 
-class EditorScreen extends StatefulWidget{
+class EditorScreen extends StatefulWidget {
   const EditorScreen({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _EditorScreenState();
 }
 
-class _EditorScreenState extends State<EditorScreen>{
+class _EditorScreenState extends State<EditorScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Text(
-        'You have pushed the button this many times:',
+    return Scaffold(
+      body: Row(
+        children: const [Text("DWA"), EditorWidget()],
       ),
     );
   }
-
 }
