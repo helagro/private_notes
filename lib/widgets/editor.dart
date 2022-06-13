@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class EditorWidget extends StatefulWidget {
   const EditorWidget({Key? key}) : super(key: key);

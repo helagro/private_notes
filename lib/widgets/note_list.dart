@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data_types/note.dart';
+import '../logic/note_handler.dart';
 
 class NoteList extends StatefulWidget {
   const NoteList({Key? key}) : super(key: key);
@@ -10,19 +11,22 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
-  List<Note> notes = List.from([Note("t1", "c1"), Note("t2", "c2")]);
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
         child: SizedBox.expand(
       child: Container(
+        padding: const EdgeInsets.all(5),
         color: Colors.blue,
         child: ListView.builder(
           itemBuilder: (context, i) {
-            return Text(notes[i].title);
+            return Center(
+                child: Text(
+              NoteHandler().notes[i].title,
+              style: const TextStyle(fontSize: 24),
+            ));
           },
-          itemCount: notes.length,
+          itemCount: NoteHandler().notes.length,
         ),
       ),
     ));
