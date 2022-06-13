@@ -10,8 +10,9 @@ class EditorWidget extends StatefulWidget {
 class _EditorWidgetState extends State<EditorWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Text(
+    return const Expanded(
+        child: Text(
       'You have pushed the button this many times:',
-    );
+    ));
   }
 }

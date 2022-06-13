@@ -13,7 +13,7 @@ class _EditorScreenState extends State<EditorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
-        children: const [Text("DWA"), EditorWidget()],
+        children: const [Text("DWA"),EditorWidget()],
       ),
     );
   }
