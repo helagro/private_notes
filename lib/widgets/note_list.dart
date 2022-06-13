@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:private_notes/widgets/editor.dart';
 
-class EditorWidget extends StatefulWidget {
-  const EditorWidget({Key? key}) : super(key: key);
+class NoteList extends StatefulWidget {
+  const NoteList({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _EditorWidgetState();
+  State<StatefulWidget> createState() => _NoteListState();
 }
 
-class _EditorWidgetState extends State<EditorWidget> {
+class _NoteListState extends State<NoteList> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
         child: SizedBox.expand(
           child: Container(
-            color: Colors.red,
+            color: Colors.blue,
               child: const Text(
           'You have pushed the button this many times:',
               ),
