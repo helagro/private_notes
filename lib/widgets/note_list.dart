@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
-
-import '../data_types/note.dart';
 import '../logic/note_handler.dart';
 
 class NoteList extends StatefulWidget {
-  const NoteList({Key? key}) : super(key: key);
+  final ValueNotifier selectedNote;
+
+  const NoteList({Key? key, required this.selectedNote}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NoteListState();
 }
 
 class _NoteListState extends State<NoteList> {
+  final NoteHandler _noteHandler = NoteHandler.getInstance();
+
+  _NoteListState(){
+    //_noteHandler.addNoteListChangedListener(reloadNoteList);
+  }
+
+  void reloadNoteList(){
+    setState(() {
+      
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(

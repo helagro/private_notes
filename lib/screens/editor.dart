@@ -11,6 +11,8 @@ class EditorScreen extends StatefulWidget {
 }
 
 class _EditorScreenState extends State<EditorScreen> {
+  final ValueNotifier selectedNote = ValueNotifier(0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +21,8 @@ class _EditorScreenState extends State<EditorScreen> {
         children: [
           ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 340),
-              child: Column(children: const [NoteListOptions(), NoteList()])),
-          const EditorWidget()
+              child: Column(children: [const NoteListOptions(), NoteList(selectedNote: selectedNote)])),
+          EditorWidget(selectedNote: selectedNote)
         ],
       ),
     ));

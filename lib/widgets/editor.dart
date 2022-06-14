@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:private_notes/logic/note_handler.dart';
 
 class EditorWidget extends StatefulWidget {
-  const EditorWidget({Key? key}) : super(key: key);
+  final ValueNotifier selectedNote;
+
+  const EditorWidget({Key? key, required this.selectedNote}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _EditorWidgetState();
 }
 
 class _EditorWidgetState extends State<EditorWidget> {
+  final _textEditingController = TextEditingController();
+
+  _EditorWidgetState(){
+    widget.selectedNote.addListener(() {
+      _textEditingController.text = NoteHandler.getInstance().notes[widget.selectedNote.value].content;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -15,11 +26,12 @@ class _EditorWidgetState extends State<EditorWidget> {
           child: Container(
             padding: const EdgeInsets.all(30),
             color: Colors.red,
-              child: const TextField(
+              child: TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
+                //controller: _textEditingController,
                 minLines: 2,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,

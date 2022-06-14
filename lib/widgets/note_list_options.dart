@@ -23,14 +23,12 @@ class _NoteListOptionsState extends State<NoteListOptions> {
           onPressed: addNote,
         ),
         const Spacer(),
-        IconButtonMain(iconData: CupertinoIcons.trash)
+        const IconButtonMain(iconData: CupertinoIcons.trash)
       ]),
     );
   }
 
   void addNote() {
-    setState(() {
-      NoteHandler.getInstance().notes.add(Note("tx", "cx"));
-    });
+    NoteHandler.getInstance().addNote(Note("tx", "cx"));
   }
 }
