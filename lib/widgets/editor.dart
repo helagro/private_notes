@@ -7,16 +7,18 @@ class EditorWidget extends StatefulWidget {
   const EditorWidget({Key? key, required this.selectedNote}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _EditorWidgetState();
+  State<StatefulWidget> createState() => _EditorWidgetState(selectedNote);
 }
 
 class _EditorWidgetState extends State<EditorWidget> {
   final _textEditingController = TextEditingController();
+  final ValueNotifier selectedNote;
 
-  _EditorWidgetState(){
-    widget.selectedNote.addListener(() {
-      _textEditingController.text = NoteHandler.getInstance().notes[widget.selectedNote.value].content;
+  _EditorWidgetState(this.selectedNote){
+    selectedNote.addListener(() {
+      _textEditingController.text = NoteHandler.getInstance().notes[selectedNote.value].content;
     });
+    _textEditingController.text = NoteHandler.getInstance().notes[selectedNote.value].content;
   }
 
   @override
@@ -29,7 +31,7 @@ class _EditorWidgetState extends State<EditorWidget> {
               child: TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                //controller: _textEditingController,
+                controller: _textEditingController,
                 minLines: 2,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
