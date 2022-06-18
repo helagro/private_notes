@@ -13,14 +13,13 @@ class NoteList extends StatefulWidget {
 class _NoteListState extends State<NoteList> {
   final NoteHandler _noteHandler = NoteHandler.getInstance();
 
-  _NoteListState(){
-    //_noteHandler.addNoteListChangedListener(reloadNoteList);
+  _NoteListState() {
+    _noteHandler.addNoteListChangedListener(reloadNoteList);
   }
 
-  void reloadNoteList(){
-    setState(() {
-      
-    });
+  void reloadNoteList() {
+    print("plate");
+    setState(() {});
   }
 
   @override
@@ -33,10 +32,18 @@ class _NoteListState extends State<NoteList> {
         child: ListView.builder(
           itemBuilder: (context, i) {
             return Center(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 24)),
+                onPressed: () {
+                  widget.selectedNote.value = i;
+                },
                 child: Text(
-              NoteHandler.getInstance().notes[i].title,
-              style: const TextStyle(fontSize: 24),
-            ));
+                  NoteHandler.getInstance().notes[i].title,
+                  style: const TextStyle(color: Colors.black),
+                ),
+              ),
+            );
           },
           itemCount: NoteHandler.getInstance().notes.length,
         ),
