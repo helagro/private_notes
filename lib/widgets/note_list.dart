@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../logic/note_handler.dart';
+import 'note_list_item.dart';
 
 class NoteList extends StatefulWidget {
   final ValueNotifier selectedNote;
@@ -18,7 +19,6 @@ class _NoteListState extends State<NoteList> {
   }
 
   void reloadNoteList() {
-    print("plate");
     setState(() {});
   }
 
@@ -27,27 +27,24 @@ class _NoteListState extends State<NoteList> {
     return Expanded(
         child: SizedBox.expand(
       child: Container(
-        padding: const EdgeInsets.all(5),
         color: Colors.blue,
         child: ListView.builder(
-          itemBuilder: (context, i) {
-            return Center(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 24)),
-                onPressed: () {
-                  widget.selectedNote.value = i;
-                },
-                child: Text(
-                  NoteHandler.getInstance().notes[i].title,
-                  style: const TextStyle(color: Colors.black),
-                ),
-              ),
+          itemBuilder: (context, noteListIndex) {
+            return NoteListItem(
+              onClick: onNoteListItemClicked,
+              noteListIndex: noteListIndex,
+              isSelected: noteListIndex == widget.selectedNote.value,
             );
           },
           itemCount: NoteHandler.getInstance().notes.length,
         ),
       ),
     ));
+  }
+
+  void onNoteListItemClicked(int noteListIndex) {
+    setState(() {
+      widget.selectedNote.value = noteListIndex;
+    });
   }
 }

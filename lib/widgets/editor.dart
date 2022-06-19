@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:private_notes/logic/note_handler.dart';
+import 'package:simple_markdown_editor/widgets/markdown_field.dart';
+import 'package:simple_markdown_editor/widgets/markdown_form_field.dart';
 
 class EditorWidget extends StatefulWidget {
   final ValueNotifier selectedNote;
@@ -31,6 +34,9 @@ class _EditorWidgetState extends State<EditorWidget> {
       child: Container(
         padding: const EdgeInsets.all(30),
         color: Colors.red,
+        // child: MarkdownFormField(
+        //   emojiConvert: true,
+        // )
         child: TextField(
             keyboardType: TextInputType.multiline,
             maxLines: null,
