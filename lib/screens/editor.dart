@@ -21,7 +21,10 @@ class _EditorScreenState extends State<EditorScreen> {
         children: [
           ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 340),
-              child: Column(children: [const NoteListOptions(), NoteList(selectedNote: selectedNote)])),
+              child: Column(children: [
+                NoteListOptions(selectedNote: selectedNote),
+                NoteList(selectedNote: selectedNote)
+              ])),
           EditorWidget(selectedNote: selectedNote)
         ],
       ),

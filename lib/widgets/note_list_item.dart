@@ -17,11 +17,13 @@ class NoteListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final backgroundColor = isSelected ? Colors.white : Colors.yellow;
 
-    return Container(
-      color: backgroundColor,
-      child: TextButton(
-        style: TextButton.styleFrom(textStyle: const TextStyle(fontSize: 24)),
-        onPressed: () => onClick?.call(noteListIndex),
+    return TextButton(
+      style: TextButton.styleFrom(
+          textStyle: const TextStyle(fontSize: 24), padding: EdgeInsets.zero),
+      onPressed: () => onClick?.call(noteListIndex),
+      child: Container(
+        color: backgroundColor,
+        padding: const EdgeInsets.all(10),
         child: Center(
           child: Text(
             NoteHandler.getInstance().notes[noteListIndex].title,

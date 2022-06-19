@@ -4,14 +4,12 @@ import 'package:private_notes/logic/note_handler.dart';
 import 'package:private_notes/widgets/icon_button_main.dart';
 import 'package:flutter/cupertino.dart';
 
-class NoteListOptions extends StatefulWidget {
-  const NoteListOptions({Key? key}) : super(key: key);
+class NoteListOptions extends StatelessWidget {
+  const NoteListOptions({Key? key, required this.selectedNote})
+      : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() => _NoteListOptionsState();
-}
+  final ValueNotifier selectedNote;
 
-class _NoteListOptionsState extends State<NoteListOptions> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,12 +21,16 @@ class _NoteListOptionsState extends State<NoteListOptions> {
           onPressed: addNote,
         ),
         const Spacer(),
-        const IconButtonMain(iconData: CupertinoIcons.trash)
+        IconButtonMain(iconData: CupertinoIcons.trash, onPressed: deleteNote)
       ]),
     );
   }
 
   void addNote() {
     NoteHandler.getInstance().addNote(Note("tx", "cx"));
+  }
+
+  void deleteNote() {
+    NoteHandler.getInstance().removeNote(selectedNote.value);
   }
 }

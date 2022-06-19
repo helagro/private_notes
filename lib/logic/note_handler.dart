@@ -20,6 +20,11 @@ class NoteHandler {
     callNoteListChangedListeners();
   }
 
+  void removeNote(int noteIndex) {
+    notes.removeAt(noteIndex);
+    callNoteListChangedListeners();
+  }
+
   void callNoteListChangedListeners() {
     for (final Function noteListChangedListener in noteListChangedListeners) {
       noteListChangedListener.call();
