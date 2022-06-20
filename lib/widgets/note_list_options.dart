@@ -5,10 +5,10 @@ import 'package:private_notes/widgets/icon_button_main.dart';
 import 'package:flutter/cupertino.dart';
 
 class NoteListOptions extends StatelessWidget {
-  const NoteListOptions({Key? key, required this.selectedNote})
-      : super(key: key);
+  NoteListOptions({Key? key, required this.selectedNote}) : super(key: key);
 
   final ValueNotifier selectedNote;
+  final NoteHandler _noteHandler = NoteHandler.getInstance();
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,18 @@ class NoteListOptions extends StatelessWidget {
   }
 
   void addNote() {
-    NoteHandler.getInstance().addNote(Note("tx", "cx"));
+    _noteHandler.addNote(
+        Note("tx(${DateTime.now().second})", "cx(${DateTime.now().second})"));
+    selectedNote.value = _noteHandler.notes.length - 1;
   }
 
   void deleteNote() {
-    NoteHandler.getInstance().removeNote(selectedNote.value);
+    final noteAmtBeforeDelete = _noteHandler.notes.length;
+    if (noteAmtBeforeDelete == 0) return;
+
+    _noteHandler.removeNote(selectedNote.value);
+    if (noteAmtBeforeDelete != 1) {
+      selectedNote.value -= 1;
+    }
   }
 }
