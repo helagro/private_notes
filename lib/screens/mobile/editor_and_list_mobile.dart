@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/screens/mobile/editor.dart';
+import 'package:private_notes/screens/mobile/editor_screen_mobile.dart';
 
-import 'note_list.dart';
+import 'note_list_screen_mobile.dart';
 
 class EditorAndListMobile extends StatelessWidget {
   const EditorAndListMobile({

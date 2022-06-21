@@ -4,7 +4,11 @@ import 'note_list_item.dart';
 
 class NoteList extends StatefulWidget {
   final Function? onNoteSelected;
-  const NoteList({Key? key, this.onNoteSelected}) : super(key: key);
+  final bool highlightSelectedNote;
+
+  const NoteList(
+      {Key? key, this.onNoteSelected, this.highlightSelectedNote = true})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NoteListState();
@@ -30,7 +34,8 @@ class _NoteListState extends State<NoteList> {
             return NoteListItem(
               onClick: onNoteListItemClicked,
               noteListIndex: noteListIndex,
-              isSelected: noteListIndex == NoteHandler.notes.length,
+              isSelected: noteListIndex == NoteHandler.selectedNote.value &&
+                  widget.highlightSelectedNote,
             );
           },
           itemCount: NoteHandler.notes.length,

@@ -12,9 +12,12 @@ class NoteListScreenMobile extends StatelessWidget {
         body: SafeArea(
             child: Column(children: [
       NoteListOptions(),
-      NoteList(onNoteSelected: () {
-        Navigator.of(context).pushReplacementNamed('editor/editor');
-      })
+      NoteList(
+        onNoteSelected: () {
+          Navigator.of(context).pushReplacementNamed('editor/editor');
+        },
+        highlightSelectedNote: false,
+      )
     ])));
   }
 

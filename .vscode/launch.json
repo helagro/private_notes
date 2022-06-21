@@ -10,8 +10,8 @@
             "request": "launch",
             "program": "lib/main.dart",
             "args": [
-              "-d",
-              "chrome"
+                "-d",
+                "chrome"
             ]
         },
         {
@@ -30,6 +30,12 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "Flutter (lib/screens/mobile/editor.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/screens/mobile/editor.dart"
         }
     ]
 }

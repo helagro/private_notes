@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/screens/editor.dart';
+import 'package:private_notes/screens/editor_screen.dart';
 
 void main() {
   runApp(const MyApp());
