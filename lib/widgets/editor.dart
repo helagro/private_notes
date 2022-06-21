@@ -5,26 +5,23 @@ import 'package:simple_markdown_editor/widgets/markdown_field.dart';
 import 'package:simple_markdown_editor/widgets/markdown_form_field.dart';
 
 class EditorWidget extends StatefulWidget {
-  final ValueNotifier selectedNote;
-
-  const EditorWidget({Key? key, required this.selectedNote}) : super(key: key);
+  const EditorWidget({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _EditorWidgetState(selectedNote);
+  State<StatefulWidget> createState() => _EditorWidgetState();
 }
 
 class _EditorWidgetState extends State<EditorWidget> {
   final _textEditingController = TextEditingController();
-  final ValueNotifier _selectedNote;
   final NoteHandler _noteHandler = NoteHandler.getInstance();
 
-  _EditorWidgetState(this._selectedNote) {
-    _selectedNote.addListener(() {
+  _EditorWidgetState() {
+    _noteHandler.selectedNote.addListener(() {
       _textEditingController.text =
-          _noteHandler.notes[_selectedNote.value].content;
+          _noteHandler.notes[_noteHandler.selectedNote.value].content;
     });
     _textEditingController.text =
-        _noteHandler.notes[_selectedNote.value].content;
+        _noteHandler.notes[_noteHandler.selectedNote.value].content;
   }
 
   @override
@@ -54,6 +51,6 @@ class _EditorWidgetState extends State<EditorWidget> {
   }
 
   void onTextChange(final String text) {
-    _noteHandler.notes[_selectedNote.value].content = text;
+    _noteHandler.notes[_noteHandler.selectedNote.value].content = text;
   }
 }

@@ -5,18 +5,18 @@ import 'package:private_notes/widgets/note_list.dart';
 import 'package:private_notes/widgets/note_list_options.dart';
 
 import 'desktop/editor.dart';
+import 'mobile/editor_and_list.dart';
 
 class EditorScreen extends StatelessWidget {
   EditorScreen({Key? key}) : super(key: key);
-  final ValueNotifier selectedNote = ValueNotifier(0);
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: ((context, constraints) {
       if (constraints.maxWidth > 600) {
-        return EditorScreenDesktop(selectedNote: selectedNote);
+        return EditorScreenDesktop();
       }
-      return NoteListScreenMobile(selectedNote: selectedNote);
+      return EditorAndListMobile();
     }));
   }
 }

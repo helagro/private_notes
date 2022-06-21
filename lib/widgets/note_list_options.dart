@@ -5,9 +5,8 @@ import 'package:private_notes/widgets/icon_button_main.dart';
 import 'package:flutter/cupertino.dart';
 
 class NoteListOptions extends StatelessWidget {
-  NoteListOptions({Key? key, required this.selectedNote}) : super(key: key);
+  NoteListOptions({Key? key}) : super(key: key);
 
-  final ValueNotifier selectedNote;
   final NoteHandler _noteHandler = NoteHandler.getInstance();
 
   @override
@@ -36,7 +35,7 @@ class NoteListOptions extends StatelessWidget {
     final noteAmtBeforeDelete = _noteHandler.notes.length;
     if (noteAmtBeforeDelete == 0) return;
 
-    _noteHandler.removeNote(selectedNote.value);
+    _noteHandler.deleteNote(selectedNote.value);
     if (noteAmtBeforeDelete != 1) {
       selectedNote.value -= 1;
     }
