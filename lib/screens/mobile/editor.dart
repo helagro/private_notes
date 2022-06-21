@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:private_notes/widgets/icon_button_main.dart';
 
 import '../../widgets/editor.dart';
 import '../../widgets/note_list.dart';
@@ -11,14 +12,15 @@ class EditorScreenMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Row(
-        children: [
-          ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 340),
-              child: Column(children: [NoteListOptions(), NoteList()])),
-          EditorWidget()
-        ],
-      ),
+      child: Column(children: [
+        IconButtonMain(
+          iconData: Icons.arrow_back,
+          onPressed: () {
+            Navigator.of(context).popAndPushNamed('editor/note_list');
+          },
+        ),
+        EditorWidget()
+      ]),
     ));
   }
 }

@@ -3,7 +3,8 @@ import '../logic/note_handler.dart';
 import 'note_list_item.dart';
 
 class NoteList extends StatefulWidget {
-  const NoteList({Key? key}) : super(key: key);
+  final Function? onNoteSelected;
+  const NoteList({Key? key, this.onNoteSelected}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NoteListState();
@@ -42,5 +43,6 @@ class _NoteListState extends State<NoteList> {
     setState(() {
       NoteHandler.selectedNote.value = noteListIndex;
     });
+    widget.onNoteSelected?.call();
   }
 }

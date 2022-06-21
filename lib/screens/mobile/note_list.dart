@@ -9,7 +9,14 @@ class NoteListScreenMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:
-            SafeArea(child: Column(children: [NoteListOptions(), NoteList()])));
+        body: SafeArea(
+            child: Column(children: [
+      NoteListOptions(),
+      NoteList(onNoteSelected: () {
+        Navigator.of(context).pushReplacementNamed('editor/editor');
+      })
+    ])));
   }
+
+  void onNoteSelected() {}
 }
