@@ -26,7 +26,7 @@ class NoteListItem extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Center(
           child: Text(
-            NoteHandler.getInstance().notes[noteListIndex].title,
+            NoteHandler.notes[noteListIndex].title,
             style: const TextStyle(color: Colors.black),
           ),
         ),

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:private_notes/logic/note_handler.dart';
-import 'package:simple_markdown_editor/widgets/markdown_field.dart';
-import 'package:simple_markdown_editor/widgets/markdown_form_field.dart';
 
 class EditorWidget extends StatefulWidget {
   const EditorWidget({Key? key}) : super(key: key);
@@ -13,15 +10,14 @@ class EditorWidget extends StatefulWidget {
 
 class _EditorWidgetState extends State<EditorWidget> {
   final _textEditingController = TextEditingController();
-  final NoteHandler _noteHandler = NoteHandler.getInstance();
 
   _EditorWidgetState() {
-    _noteHandler.selectedNote.addListener(() {
+    NoteHandler.selectedNote.addListener(() {
       _textEditingController.text =
-          _noteHandler.notes[_noteHandler.selectedNote.value].content;
+          NoteHandler.notes[NoteHandler.selectedNote.value].content;
     });
     _textEditingController.text =
-        _noteHandler.notes[_noteHandler.selectedNote.value].content;
+        NoteHandler.notes[NoteHandler.selectedNote.value].content;
   }
 
   @override
@@ -51,6 +47,6 @@ class _EditorWidgetState extends State<EditorWidget> {
   }
 
   void onTextChange(final String text) {
-    _noteHandler.notes[_noteHandler.selectedNote.value].content = text;
+    NoteHandler.notes[NoteHandler.selectedNote.value].content = text;
   }
 }

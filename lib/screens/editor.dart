@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/screens/mobile/note_list.dart';
-import 'package:private_notes/widgets/editor.dart';
-import 'package:private_notes/widgets/note_list.dart';
-import 'package:private_notes/widgets/note_list_options.dart';
-
 import 'desktop/editor.dart';
 import 'mobile/editor_and_list.dart';
 

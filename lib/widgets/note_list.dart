@@ -3,19 +3,15 @@ import '../logic/note_handler.dart';
 import 'note_list_item.dart';
 
 class NoteList extends StatefulWidget {
-  final ValueNotifier selectedNote;
-
-  const NoteList({Key? key, required this.selectedNote}) : super(key: key);
+  const NoteList({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NoteListState();
 }
 
 class _NoteListState extends State<NoteList> {
-  final NoteHandler _noteHandler = NoteHandler.getInstance();
-
   _NoteListState() {
-    _noteHandler.addNoteListChangedListener(reloadNoteList);
+    NoteHandler.addNoteListChangedListener(reloadNoteList);
   }
 
   void reloadNoteList() {
@@ -33,10 +29,10 @@ class _NoteListState extends State<NoteList> {
             return NoteListItem(
               onClick: onNoteListItemClicked,
               noteListIndex: noteListIndex,
-              isSelected: noteListIndex == widget.selectedNote.value,
+              isSelected: noteListIndex == NoteHandler.notes.length,
             );
           },
-          itemCount: NoteHandler.getInstance().notes.length,
+          itemCount: NoteHandler.notes.length,
         ),
       ),
     ));
@@ -44,7 +40,7 @@ class _NoteListState extends State<NoteList> {
 
   void onNoteListItemClicked(int noteListIndex) {
     setState(() {
-      widget.selectedNote.value = noteListIndex;
+      NoteHandler.selectedNote.value = noteListIndex;
     });
   }
 }

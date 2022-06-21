@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/editor.dart';
 import '../../widgets/note_list.dart';
 import '../../widgets/note_list_options.dart';
 

@@ -7,8 +7,6 @@ import 'package:flutter/cupertino.dart';
 class NoteListOptions extends StatelessWidget {
   NoteListOptions({Key? key}) : super(key: key);
 
-  final NoteHandler _noteHandler = NoteHandler.getInstance();
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,18 +24,12 @@ class NoteListOptions extends StatelessWidget {
   }
 
   void addNote() {
-    _noteHandler.addNote(
-        Note("tx(${DateTime.now().second})", "cx(${DateTime.now().second})"));
-    selectedNote.value = _noteHandler.notes.length - 1;
+    NoteHandler.addNote(
+        Note("tx(${DateTime.now().second})", "cx(${DateTime.now().second})"),
+        selectNote: true);
   }
 
   void deleteNote() {
-    final noteAmtBeforeDelete = _noteHandler.notes.length;
-    if (noteAmtBeforeDelete == 0) return;
-
-    _noteHandler.deleteNote(selectedNote.value);
-    if (noteAmtBeforeDelete != 1) {
-      selectedNote.value -= 1;
-    }
+    NoteHandler.deleteSelectedNote(selectPriorNote: true);
   }
 }
