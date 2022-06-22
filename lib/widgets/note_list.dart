@@ -15,8 +15,12 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
-  _NoteListState() {
-    NoteHandler.addNoteListChangedListener(reloadNoteList);
+  final int _id = UniqueKey().hashCode;
+
+  @override
+  void initState() {
+    NoteHandler.addNoteListChangedListener(reloadNoteList, _id);
+    super.initState();
   }
 
   void reloadNoteList() {
@@ -49,5 +53,11 @@ class _NoteListState extends State<NoteList> {
       NoteHandler.selectedNote.value = noteListIndex;
     });
     widget.onNoteSelected?.call();
+  }
+
+  @override
+  void dispose() {
+    NoteHandler.removeNoteListChangedListener(_id);
+    super.dispose();
   }
 }

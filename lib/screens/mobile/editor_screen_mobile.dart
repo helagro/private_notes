@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:private_notes/screens/mobile/editor_options_mobile.dart';
 import 'package:private_notes/widgets/icon_button_main.dart';
 
 import '../../widgets/editor.dart';
@@ -12,15 +13,7 @@ class EditorScreenMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Column(children: [
-        IconButtonMain(
-          iconData: Icons.arrow_back,
-          onPressed: () {
-            Navigator.of(context).popAndPushNamed('editor/note_list');
-          },
-        ),
-        EditorWidget()
-      ]),
+      child: Column(children: [EditorOptionsMobile(), EditorWidget()]),
     ));
   }
 }

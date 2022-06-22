@@ -4,14 +4,32 @@ import 'package:private_notes/data_types/note.dart';
 class NoteHandler {
   static final List<Note> notes =
       List.from([Note("t1", "c1"), Note("t2", "c2"), Note("t3", "c3")]);
-  static final List<Function> _noteListChangedListeners =
-      List.empty(growable: true);
+  static final List<Map> _noteListChangedListeners = List.empty(growable: true);
   static final ValueNotifier selectedNote = ValueNotifier(0);
 
-  static void addNoteListChangedListener(Function noteListChangedListener) {
-    _noteListChangedListeners.add(noteListChangedListener);
+  //ANCHOR listeners
+  static void addNoteListChangedListener(
+      Function noteListChangedListener, int id) {
+    _noteListChangedListeners
+        .add({"function": noteListChangedListener, "id": id});
   }
 
+  static void removeNoteListChangedListener(int id) {
+    for (Map noteListChangedListenerMap in _noteListChangedListeners) {
+      if (noteListChangedListenerMap["id"] == id) {
+        _noteListChangedListeners.remove(noteListChangedListenerMap);
+        return;
+      }
+    }
+  }
+
+  static void callNoteListChangedListeners() {
+    for (final Map noteListChangedListenerMap in _noteListChangedListeners) {
+      noteListChangedListenerMap["function"].call();
+    }
+  }
+
+  //ANCHOR note list editors
   static void addNote(Note note, {bool? selectNote}) {
     notes.add(note);
 
@@ -34,12 +52,6 @@ class NoteHandler {
 
     if (noteAmtBeforeDelete != 1 && selectPriorNote == true) {
       selectedNote.value -= 1;
-    }
-  }
-
-  static void callNoteListChangedListeners() {
-    for (final Function noteListChangedListener in _noteListChangedListeners) {
-      noteListChangedListener.call();
     }
   }
 }
