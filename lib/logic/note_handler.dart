@@ -44,14 +44,14 @@ class NoteHandler {
   }
 
   static void deleteNote(int noteIndex, {bool? selectPriorNote}) {
-    final noteAmtBeforeDelete = notes.length;
-    if (noteAmtBeforeDelete == 0) return;
+    if (notes.isEmpty) return;
 
     notes.removeAt(noteIndex);
     callNoteListChangedListeners();
 
-    if (noteAmtBeforeDelete != 1 && selectPriorNote == true) {
+    if (noteIndex != 0 && selectPriorNote == true) {
       selectedNote.value -= 1;
     }
+    selectedNote.notifyListeners();
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../data_types/note.dart';
-import '../../logic/note_handler.dart';
-import '../../widgets/icon_button_main.dart';
+import '../data_types/note.dart';
+import '../logic/note_handler.dart';
+import 'icon_button_main.dart';
 
 class EditorOptionsMobile extends StatelessWidget {
   @override

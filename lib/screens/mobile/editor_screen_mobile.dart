@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/screens/mobile/editor_options_mobile.dart';
+import 'package:private_notes/widgets/editor_options_mobile.dart';
 import 'package:private_notes/widgets/icon_button_main.dart';
 
 import '../../widgets/editor.dart';

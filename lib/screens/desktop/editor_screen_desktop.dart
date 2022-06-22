@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:private_notes/widgets/editor_options_desktop.dart';
 
 import '../../widgets/editor.dart';
+import '../../widgets/editor_options_mobile.dart';
 import '../../widgets/note_list.dart';
 import '../../widgets/note_list_options.dart';
 
@@ -16,7 +18,8 @@ class EditorScreenDesktop extends StatelessWidget {
           ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 320),
               child: Column(children: [NoteListOptions(), NoteList()])),
-          EditorWidget()
+          Expanded(
+              child: Column(children: [EditorOptionsDesktop(), EditorWidget()]))
         ],
       ),
     ));
