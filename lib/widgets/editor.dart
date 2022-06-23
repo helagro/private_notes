@@ -12,12 +12,8 @@ class _EditorWidgetState extends State<EditorWidget> {
   final _textEditingController = TextEditingController();
 
   _EditorWidgetState() {
-    NoteHandler.selectedNote.addListener(() {
-      _textEditingController.text =
-          NoteHandler.notes[NoteHandler.selectedNote.value].content;
-    });
-    _textEditingController.text =
-        NoteHandler.notes[NoteHandler.selectedNote.value].content;
+    NoteHandler.selectedNote.addListener(fillWithNoteContent);
+    fillWithNoteContent();
   }
 
   @override
@@ -46,7 +42,11 @@ class _EditorWidgetState extends State<EditorWidget> {
     ));
   }
 
+  void fillWithNoteContent() {
+    _textEditingController.text = NoteHandler.getCurrentNote()?.content ?? "";
+  }
+
   void onTextChange(final String text) {
-    NoteHandler.notes[NoteHandler.selectedNote.value].content = text;
+    NoteHandler.getCurrentNote()?.content = text;
   }
 }

@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 class NoteListOptions extends StatelessWidget {
   final Function? onNoteAddedListener;
 
-  NoteListOptions({Key? key, this.onNoteAddedListener}) : super(key: key);
+  const NoteListOptions({Key? key, this.onNoteAddedListener}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

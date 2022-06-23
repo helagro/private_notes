@@ -8,7 +8,7 @@ class EditorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: ((context, constraints) {
-      if (constraints.maxWidth > 650) {
+      if (constraints.maxWidth > 750) {
         return const EditorScreenDesktop();
       }
       return const EditorAndListMobile();

@@ -54,4 +54,8 @@ class NoteHandler {
     }
     selectedNote.notifyListeners();
   }
+
+  static Note? getCurrentNote() {
+    return notes.isNotEmpty ? notes[selectedNote.value] : null;
+  }
 }
