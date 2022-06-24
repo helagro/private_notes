@@ -13,8 +13,6 @@
             "args": [
                 "-d",
                 "chrome",
-                "--base-href",
-                "/build/web/"
             ]
         },
         {
