@@ -12,7 +12,9 @@
             "program": "lib/main.dart",
             "args": [
                 "-d",
-                "chrome"
+                "chrome",
+                "--base-href",
+                "/build/web/"
             ]
         },
         {
