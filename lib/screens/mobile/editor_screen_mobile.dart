@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:private_notes/widgets/editor_options_mobile.dart';
-import 'package:private_notes/widgets/icon_button_main.dart';
-
 import '../../widgets/editor.dart';
-import '../../widgets/note_list.dart';
-import '../../widgets/note_list_options.dart';
 
 class EditorScreenMobile extends StatelessWidget {
   const EditorScreenMobile({Key? key}) : super(key: key);

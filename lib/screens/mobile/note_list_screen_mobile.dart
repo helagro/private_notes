@@ -20,6 +20,6 @@ class NoteListScreenMobile extends StatelessWidget {
   }
 
   void goToEditor(context) {
-    Navigator.of(context).pushReplacementNamed('editor/editor');
+    Navigator.of(context).pushNamed('editor/editor');
   }
 }

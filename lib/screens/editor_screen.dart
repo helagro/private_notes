@@ -11,7 +11,7 @@ class EditorScreen extends StatelessWidget {
       if (constraints.maxWidth > 750) {
         return const EditorScreenDesktop();
       }
-      return const EditorAndListMobile();
+      return EditorAndListMobile();
     }));
   }
 }
