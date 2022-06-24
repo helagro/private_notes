@@ -5,6 +5,7 @@ import 'note_list_screen_mobile.dart';
 
 class EditorAndListMobile extends StatelessWidget {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  bool isOnNoteList = true;
 
   EditorAndListMobile({
     Key? key,
@@ -21,9 +22,11 @@ class EditorAndListMobile extends StatelessWidget {
 
               switch (settings.name) {
                 case "editor/note_list":
+                  isOnNoteList = true;
                   builder = (BuildContext _) => const NoteListScreenMobile();
                   break;
                 case "editor/editor":
+                  isOnNoteList = false;
                   builder = (BuildContext _) => const EditorScreenMobile();
                   break;
                 default:
@@ -35,7 +38,7 @@ class EditorAndListMobile extends StatelessWidget {
             })),
         onWillPop: () {
           _navigatorKey.currentState?.maybePop();
-          return Future.value(false);
+          return Future.value(isOnNoteList);
         });
   }
 }
