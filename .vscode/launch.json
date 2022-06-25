@@ -16,6 +16,13 @@
             ]
         },
         {
+            "name":"dropbox_test",
+            "request": "launch",
+            "console": "terminal",
+            "program": "test/dropbox_handler_test.dart",
+            "type": "dart"
+        },
+        {
             "name": "private_notes",
             "request": "launch",
             "type": "dart"
