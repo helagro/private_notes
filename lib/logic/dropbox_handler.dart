@@ -20,6 +20,7 @@ class DropboxHandler {
   }
 
   DropboxHandler() {
+    print("yeah nah yeah nah yeah nah");
     generateCodeChallengePair();
   }
 
@@ -51,7 +52,6 @@ class DropboxHandler {
   }
 
   Future<void> token(String str) async {
-    print("AT TOKEN: ${_codeVerifier}, ${_codeVerifier!.length.toString()}");
     Map<String, String> body = {
       "code": str,
       "grant_type": "authorization_code",
@@ -63,7 +63,33 @@ class DropboxHandler {
         .post(Uri.parse("https://api.dropbox.com/oauth2/token"), body: body);
     Map<String, dynamic> responseBody = jsonDecode(res.body);
     _token = responseBody["access_token"];
-    print("moral: $responseBody");
+  }
+
+  Future<List<Note>> list() async {
+    print("7 cents" + _token.toString());
+    Map<String, String> headers = {
+      "Authorization": "Bearer $_token",
+      "Content-Type": "application/json",
+    };
+
+    Map<String, dynamic> body = {
+      "include_deleted": false,
+      "include_has_explicit_shared_members": false,
+      "include_media_info": false,
+      "include_mounted_folders": true,
+      "include_non_downloadable_files": false,
+      "path": "",
+      "recursive": false
+    };
+
+    http.Response res = await http.post(
+        Uri.parse("https://api.dropboxapi.com/2/files/list_folder"),
+        headers: headers,
+        body: jsonEncode(body));
+    //Map<String, dynamic> responseBody = jsonDecode(res.body);
+
+    print("heafefa ${res.body}, $res");
+    return [];
   }
 
   Future<void> upload(Note note) async {

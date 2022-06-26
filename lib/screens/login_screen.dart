@@ -32,7 +32,7 @@ class LoginScreen extends StatelessWidget {
   void doStuff(value, context) async {
     await dropboxHandler.token(value);
     print("will upload");
-    //Navigator.pushNamed(context, "/editor");
+    Navigator.pushNamed(context, "/editor");
     //await dropboxHandler.upload(Note("titel", "coontent"));
   }
 }

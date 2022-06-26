@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:private_notes/data_types/note.dart';
 
 class NoteHandler {
-  static final List<Note> notes =
-      List.from([Note("t1", "c1"), Note("t2", "c2"), Note("t3", "c3")]);
+  static final List<Note> notes = List<Note>.empty(growable: true);
   static final List<Map> _noteListChangedListeners = List.empty(growable: true);
   static final ValueNotifier selectedNote = ValueNotifier(0);
 
