@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/logic/dropbox_handler.dart';
+import 'package:opnot/logic/dropbox_handler.dart';
 
 import '../data_types/note.dart';
 

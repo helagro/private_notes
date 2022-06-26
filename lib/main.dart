@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/screens/editor_screen.dart';
-import 'package:private_notes/screens/login_screen.dart';
+import 'package:opnot/screens/editor_screen.dart';
+import 'package:opnot/screens/login_screen.dart';
 
 void main() {
   runApp(MyApp());

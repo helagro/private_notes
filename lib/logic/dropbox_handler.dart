@@ -5,9 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-
 import '../data_types/note.dart';
-import 'note_handler.dart';
 
 class DropboxHandler {
   static DropboxHandler? _instance;
@@ -80,7 +78,6 @@ class DropboxHandler {
     Map<String, dynamic> responseBody = jsonDecode(res.body);
     _token = Future.value(responseBody["access_token"]);
     _storage.write(key: _dropboxTokenKey, value: await _token);
-    //print("troy :${await _token}");
   }
 
   //ANCHOR content
@@ -140,7 +137,6 @@ class DropboxHandler {
 
   Future<void> upload(Note note) async {
     if (!note.isLoaded) return;
-    print("uploading: ${note.title}  ${note.content}");
     Map<String, String> dropboxAPIArg = {
       "path": "/${note.title}.txt",
       "mode": "overwrite"

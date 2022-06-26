@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:private_notes/logic/dropbox_handler.dart';
+import 'package:opnot/logic/dropbox_handler.dart';
 
 void main() {
   print("hello world");

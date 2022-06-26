@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/screens/mobile/editor_screen_mobile.dart';
+import 'package:opnot/screens/mobile/editor_screen_mobile.dart';
 
 import 'note_list_screen_mobile.dart';
 

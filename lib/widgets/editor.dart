@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/logic/dropbox_handler.dart';
-import 'package:private_notes/logic/note_handler.dart';
+import 'package:opnot/logic/dropbox_handler.dart';
+import 'package:opnot/logic/note_handler.dart';
 
 class EditorWidget extends StatefulWidget {
   const EditorWidget({Key? key}) : super(key: key);

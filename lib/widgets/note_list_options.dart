@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/data_types/note.dart';
-import 'package:private_notes/logic/note_handler.dart';
-import 'package:private_notes/widgets/icon_button_main.dart';
+import 'package:opnot/data_types/note.dart';
+import 'package:opnot/logic/note_handler.dart';
+import 'package:opnot/widgets/icon_button_main.dart';
 import 'package:flutter/cupertino.dart';
 
 class NoteListOptions extends StatelessWidget {

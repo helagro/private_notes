@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:private_notes/data_types/note.dart';
-import 'package:private_notes/logic/dropbox_handler.dart';
+import 'package:opnot/data_types/note.dart';
+import 'package:opnot/logic/dropbox_handler.dart';
 
 class NoteHandler {
   static final List<Note> notes = List<Note>.empty(growable: true);
