@@ -4,6 +4,8 @@ import 'package:private_notes/logic/dropbox_handler.dart';
 import '../data_types/note.dart';
 
 class LoginScreen extends StatelessWidget {
+  DropboxHandler dropboxHandler = DropboxHandler.getInstance();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,12 +15,12 @@ class LoginScreen extends StatelessWidget {
             TextButton(
               child: Text("do something"),
               onPressed: () {
-                DropboxHandler().authorize();
+                dropboxHandler.authorize();
               },
             ),
             TextField(
               onChanged: (value) {
-                doStuff(value);
+                doStuff(value, context);
               },
             )
           ],
@@ -27,10 +29,10 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void doStuff(value) async {
-    DropboxHandler dropboxHandler = DropboxHandler.getInstance();
+  void doStuff(value, context) async {
     await dropboxHandler.token(value);
     print("will upload");
-    await dropboxHandler.upload(Note("titel", "content"));
+    //Navigator.pushNamed(context, "/editor");
+    //await dropboxHandler.upload(Note("titel", "coontent"));
   }
 }
