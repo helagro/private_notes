@@ -5,22 +5,33 @@ import 'desktop/editor_screen_desktop.dart';
 import 'mobile/editor_and_list_mobile.dart';
 
 class EditorScreen extends StatelessWidget {
-  EditorScreen({Key? key}) : super(key: key) {}
-
-  void loadNotes() async {
-    NoteHandler.notes.addAll(await DropboxHandler.getInstance().list());
-    NoteHandler.callNoteListChangedListeners();
-  }
+  EditorScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DropboxHandler.getInstance();
-    //loadNotes();
+    handleDropbox(context);
     return LayoutBuilder(builder: ((context, constraints) {
       if (constraints.maxWidth > 750) {
         return const EditorScreenDesktop();
       }
       return EditorAndListMobile();
     }));
+  }
+
+  void handleDropbox(final BuildContext context) {
+    DropboxHandler dropboxHandler = DropboxHandler.getInstance();
+    dropboxHandler.hasToken().then((hasToken) {
+      print("wallmart $hasToken");
+      if (hasToken) {
+        loadNotes(dropboxHandler);
+      } else {
+        Navigator.pushNamed(context, "/login");
+      }
+    });
+  }
+
+  void loadNotes(DropboxHandler dropboxHandler) async {
+    NoteHandler.notes.addAll(await dropboxHandler.getNotes());
+    NoteHandler.callNoteListChangedListeners();
   }
 }

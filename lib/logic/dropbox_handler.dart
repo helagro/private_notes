@@ -12,11 +12,11 @@ import 'note_handler.dart';
 class DropboxHandler {
   static DropboxHandler? _instance;
   static const _appKey = "y4hmk1pjerg1vvp";
-  String? _token;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  static const _dropboxTokenKey = "dropboxToken";
   String? _codeVerifier;
   String? _codeChallenge;
-  final FlutterSecureStorage _storage = FlutterSecureStorage();
-  static const _dropboxTokenKey = "dropboxToken";
+  Future<String?>? _token;
 
   static DropboxHandler getInstance() {
     _instance ??= DropboxHandler();
@@ -24,26 +24,36 @@ class DropboxHandler {
   }
 
   DropboxHandler() {
-    readToken();
-    print("yeah nah yeah nah yeah nah");
-    generateCodeChallengePair();
+    _readToken();
   }
 
-  void readToken() async {
-    _token = await _storage.read(key: _dropboxTokenKey);
-    print("lot" + _token.toString());
-    NoteHandler.notes.addAll(await list());
-    NoteHandler.callNoteListChangedListeners();
+  void _readToken() async {
+    _token = _storage.read(key: _dropboxTokenKey);
+  }
+
+  Future<bool> hasToken() async {
+    String? tokenValue = await _token;
+    return tokenValue != null;
   }
 
   void authorize() {
+    _generateCodeChallengePair();
     launchUrl(
         Uri.parse(
             "https://www.dropbox.com/oauth2/authorize?client_id=$_appKey&response_type=code&code_challenge_method=S256&code_challenge=$_codeChallenge"),
-        webOnlyWindowName: "_blank");
+        webOnlyWindowName: "_blank",
+        mode: LaunchMode.externalApplication);
   }
 
-  void generateCodeChallengePair() {
+  void _generateCodeChallengePair() {
+    _codeVerifier = _createCodeVerifier();
+    final byteCodeChallenge = sha256.convert(utf8.encode(_codeVerifier!)).bytes;
+    final base64CodeChallenge =
+        const Base64Encoder.urlSafe().convert(byteCodeChallenge);
+    _codeChallenge = base64CodeChallenge.replaceAll("=", "").toString();
+  }
+
+  String _createCodeVerifier() {
     const characters =
         "abcdefghijklmnopqrstuvwxyzACBDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     final random = Random.secure();
@@ -53,15 +63,10 @@ class DropboxHandler {
       int randomCharactersIndex = random.nextInt(characters.length);
       codeVerifierBuffer.write(characters[randomCharactersIndex]);
     }
-    _codeVerifier = codeVerifierBuffer.toString();
-    final byteCodeChallenge = sha256.convert(utf8.encode(_codeVerifier!)).bytes;
-    final base64CodeChallenge =
-        const Base64Encoder.urlSafe().convert(byteCodeChallenge);
-    _codeChallenge = base64CodeChallenge.replaceAll("=", "").toString();
-    print("verifier:?$_codeVerifier?\nchallenges:?$_codeChallenge?");
+    return codeVerifierBuffer.toString();
   }
 
-  Future<void> token(String str) async {
+  Future<void> generateToken(String str) async {
     Map<String, String> body = {
       "code": str,
       "grant_type": "authorization_code",
@@ -72,18 +77,17 @@ class DropboxHandler {
     http.Response res = await http
         .post(Uri.parse("https://api.dropbox.com/oauth2/token"), body: body);
     Map<String, dynamic> responseBody = jsonDecode(res.body);
-    _token = responseBody["access_token"];
-    _storage.write(key: _dropboxTokenKey, value: _token);
+    _token = Future.value(responseBody["access_token"]);
+    _storage.write(key: _dropboxTokenKey, value: await _token);
   }
 
-  Future<List<Note>> list() async {
-    print("7 cents" + _token.toString());
+  Future<List<Note>> getNotes() async {
     Map<String, String> headers = {
-      "Authorization": "Bearer $_token",
+      "Authorization": "Bearer ${await _token}",
       "Content-Type": "application/json",
     };
 
-    Map<String, dynamic> body = {
+    const Map<String, dynamic> body = {
       "include_deleted": false,
       "include_has_explicit_shared_members": false,
       "include_media_info": false,
@@ -99,14 +103,14 @@ class DropboxHandler {
         body: jsonEncode(body));
     Map<String, dynamic> responseBody = jsonDecode(res.body);
 
-    print("heafefa ${res.body}, $res");
+    return _getNotesFromHttpResponseBody(responseBody);
+  }
 
+  List<Note> _getNotesFromHttpResponseBody(Map<String, dynamic> responseBody) {
     List<Note> notes = List<Note>.empty(growable: true);
     for (final entry in responseBody["entries"]) {
       notes.add(Note(entry["name"], "placeholder"));
-      print(notes);
     }
-
     return notes;
   }
 
@@ -117,7 +121,7 @@ class DropboxHandler {
     };
 
     Map<String, String> headers = {
-      "Authorization": "Bearer $_token",
+      "Authorization": "Bearer ${await _token}",
       "Dropbox-API-Arg": jsonEncode(dropboxAPIArg),
       "Content-Type": "application/octet-stream",
       "Accept": "application/octet-stream"

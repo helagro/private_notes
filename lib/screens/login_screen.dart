@@ -9,28 +9,30 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            TextButton(
-              child: Text("do something"),
-              onPressed: () {
-                dropboxHandler.authorize();
-              },
-            ),
-            TextField(
-              onChanged: (value) {
-                doStuff(value, context);
-              },
-            )
-          ],
+      body: SafeArea(
+        child: Container(
+          child: Column(
+            children: [
+              TextButton(
+                child: Text("do something"),
+                onPressed: () {
+                  dropboxHandler.authorize();
+                },
+              ),
+              TextField(
+                onChanged: (value) {
+                  doStuff(value, context);
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   void doStuff(value, context) async {
-    await dropboxHandler.token(value);
+    await dropboxHandler.generateToken(value);
     print("will upload");
     Navigator.pushNamed(context, "/editor");
     //await dropboxHandler.upload(Note("titel", "coontent"));

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         "/login": (BuildContext context) => LoginScreen(),
         '/editor': (BuildContext context) => EditorScreen(),
       },
-      initialRoute: "/login",
+      initialRoute: "/editor",
     );
   }
 }
