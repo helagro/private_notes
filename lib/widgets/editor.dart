@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:private_notes/logic/dropbox_handler.dart';
 import 'package:private_notes/logic/note_handler.dart';
 
 class EditorWidget extends StatefulWidget {
@@ -55,6 +56,7 @@ class _EditorWidgetState extends State<EditorWidget> {
 
   @override
   void dispose() {
+    NoteHandler.saveCurrentNote();
     NoteHandler.selectedNoteI.removeListener(fillWithNoteContent);
     NoteHandler.removeNoteListChangedListener(_noteListChangedListenerId);
     super.dispose();

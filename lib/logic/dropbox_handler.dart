@@ -19,11 +19,12 @@ class DropboxHandler {
   Future<String?>? _token;
 
   static DropboxHandler getInstance() {
-    _instance ??= DropboxHandler();
+    _instance ??= DropboxHandler(19246);
     return _instance!;
   }
 
-  DropboxHandler() {
+  DropboxHandler(int code) {
+    if (code != 19246) return;
     _readToken();
   }
 
@@ -82,6 +83,7 @@ class DropboxHandler {
     //print("troy :${await _token}");
   }
 
+  //ANCHOR content
   Future<List<Note>> getNotes() async {
     Map<String, String> headers = {
       "Authorization": "Bearer ${await _token}",
@@ -133,9 +135,12 @@ class DropboxHandler {
         Uri.parse("https://content.dropboxapi.com/2/files/download"),
         headers: headers);
     note.content = res.body;
+    note.isLoaded = true;
   }
 
   Future<void> upload(Note note) async {
+    if (!note.isLoaded) return;
+    print("uploading: ${note.title}  ${note.content}");
     Map<String, String> dropboxAPIArg = {
       "path": "/${note.title}.txt",
       "mode": "overwrite"
@@ -153,5 +158,19 @@ class DropboxHandler {
         headers: headers,
         body: utf8.encode(note.content));
     //Map<String, dynamic> responseBody = jsonDecode(res.body);
+  }
+
+  Future<void> delete(Note note) async {
+    Map<String, String> headers = {
+      "Authorization": "Bearer ${await _token}",
+      "Content-Type": "application/json",
+    };
+
+    Map<String, String> body = {"path": "/${note.title}.txt"};
+
+    http.Response res = await http.post(
+        Uri.parse("https://api.dropboxapi.com/2/files/delete_v2"),
+        headers: headers,
+        body: jsonEncode(body));
   }
 }

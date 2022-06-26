@@ -26,7 +26,8 @@ class NoteListOptions extends StatelessWidget {
 
   void addNote() {
     NoteHandler.addNote(
-        Note("tx(${DateTime.now().second})", "cx(${DateTime.now().second})"),
+        Note("tx(${DateTime.now().second})", "cx(${DateTime.now().second})",
+            isLoaded: true),
         selectNote: true);
     onNoteAddedListener?.call();
   }

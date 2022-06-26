@@ -30,22 +30,31 @@ class NoteHandler {
   }
 
   static void setSelectedNoteI(int index) {
-    DropboxHandler dropboxHandler = DropboxHandler.getInstance();
-    if (getCurrentNote() != null) dropboxHandler.upload(getCurrentNote()!);
+    saveCurrentNote();
 
     selectedNoteI.value = index;
-    if (!getCurrentNote()!.isLoaded) {
-      dropboxHandler
-          .fillNoteContent(getCurrentNote()!)
-          .then((value) => callNoteListChangedListeners());
-    }
+    loadCurrentNote();
+  }
+
+  //ANCHOR storage
+  static void loadCurrentNote() {
+    if (getCurrentNote() == null || getCurrentNote()!.isLoaded) return;
+    DropboxHandler.getInstance()
+        .fillNoteContent(getCurrentNote()!)
+        .then((value) => callNoteListChangedListeners());
+  }
+
+  static void saveCurrentNote() {
+    if (getCurrentNote() == null) return;
+    DropboxHandler.getInstance().upload(getCurrentNote()!);
   }
 
   //ANCHOR note list editors
-  static void loadNotes() async {
+  static void loadNoteList() async {
     notes.clear();
     notes.addAll(await DropboxHandler.getInstance().getNotes());
     callNoteListChangedListeners();
+    loadCurrentNote();
   }
 
   static void addNote(Note note, {bool? selectNote}) {
@@ -64,6 +73,7 @@ class NoteHandler {
   static void deleteNote(int noteIndex, {bool? selectPriorNote}) {
     if (notes.isEmpty) return;
 
+    DropboxHandler.getInstance().delete(notes[noteIndex]);
     notes.removeAt(noteIndex);
     callNoteListChangedListeners();
 
