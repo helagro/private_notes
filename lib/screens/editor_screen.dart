@@ -8,8 +8,8 @@ class EditorScreen extends StatelessWidget {
   EditorScreen({Key? key}) : super(key: key) {}
 
   void loadNotes() async {
-    //NoteHandler.notes.addAll(
-    await DropboxHandler.getInstance().list(); //);
+    NoteHandler.notes.addAll(await DropboxHandler.getInstance().list());
+    NoteHandler.callNoteListChangedListeners();
   }
 
   @override

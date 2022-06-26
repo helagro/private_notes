@@ -86,10 +86,17 @@ class DropboxHandler {
         Uri.parse("https://api.dropboxapi.com/2/files/list_folder"),
         headers: headers,
         body: jsonEncode(body));
-    //Map<String, dynamic> responseBody = jsonDecode(res.body);
+    Map<String, dynamic> responseBody = jsonDecode(res.body);
 
     print("heafefa ${res.body}, $res");
-    return [];
+
+    List<Note> notes = List<Note>.empty(growable: true);
+    for (final entry in responseBody["entries"]) {
+      notes.add(Note(entry["name"], "placeholder"));
+      print(notes);
+    }
+
+    return notes;
   }
 
   Future<void> upload(Note note) async {
