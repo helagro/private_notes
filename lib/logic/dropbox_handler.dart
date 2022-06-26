@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 import '../data_types/note.dart';
+import 'note_handler.dart';
 
 class DropboxHandler {
   static DropboxHandler? _instance;
@@ -13,6 +15,8 @@ class DropboxHandler {
   String? _token;
   String? _codeVerifier;
   String? _codeChallenge;
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
+  static const _dropboxTokenKey = "dropboxToken";
 
   static DropboxHandler getInstance() {
     _instance ??= DropboxHandler();
@@ -20,11 +24,17 @@ class DropboxHandler {
   }
 
   DropboxHandler() {
+    readToken();
     print("yeah nah yeah nah yeah nah");
     generateCodeChallengePair();
   }
 
-  void generateChallengePair() {}
+  void readToken() async {
+    _token = await _storage.read(key: _dropboxTokenKey);
+    print("lot" + _token.toString());
+    NoteHandler.notes.addAll(await list());
+    NoteHandler.callNoteListChangedListeners();
+  }
 
   void authorize() {
     launchUrl(
@@ -63,6 +73,7 @@ class DropboxHandler {
         .post(Uri.parse("https://api.dropbox.com/oauth2/token"), body: body);
     Map<String, dynamic> responseBody = jsonDecode(res.body);
     _token = responseBody["access_token"];
+    _storage.write(key: _dropboxTokenKey, value: _token);
   }
 
   Future<List<Note>> list() async {

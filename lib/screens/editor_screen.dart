@@ -14,7 +14,8 @@ class EditorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    loadNotes();
+    DropboxHandler.getInstance();
+    //loadNotes();
     return LayoutBuilder(builder: ((context, constraints) {
       if (constraints.maxWidth > 750) {
         return const EditorScreenDesktop();
