@@ -38,7 +38,7 @@ class _NoteListState extends State<NoteList> {
             return NoteListItem(
               onClick: onNoteListItemClicked,
               noteListIndex: noteListIndex,
-              isSelected: noteListIndex == NoteHandler.selectedNote.value &&
+              isSelected: noteListIndex == NoteHandler.selectedNoteI.value &&
                   widget.highlightSelectedNote,
             );
           },
@@ -50,7 +50,7 @@ class _NoteListState extends State<NoteList> {
 
   void onNoteListItemClicked(int noteListIndex) {
     setState(() {
-      NoteHandler.selectedNote.value = noteListIndex;
+      NoteHandler.setSelectedNoteI(noteListIndex);
     });
     widget.onNoteSelected?.call();
   }

@@ -10,9 +10,12 @@ class EditorWidget extends StatefulWidget {
 
 class _EditorWidgetState extends State<EditorWidget> {
   final _textEditingController = TextEditingController();
+  static final int _noteListChangedListenerId = UniqueKey().hashCode;
 
   _EditorWidgetState() {
-    NoteHandler.selectedNote.addListener(fillWithNoteContent);
+    NoteHandler.selectedNoteI.addListener(fillWithNoteContent);
+    NoteHandler.addNoteListChangedListener(
+        fillWithNoteContent, _noteListChangedListenerId);
     fillWithNoteContent();
   }
 
@@ -52,7 +55,8 @@ class _EditorWidgetState extends State<EditorWidget> {
 
   @override
   void dispose() {
-    NoteHandler.selectedNote.removeListener(fillWithNoteContent);
+    NoteHandler.selectedNoteI.removeListener(fillWithNoteContent);
+    NoteHandler.removeNoteListChangedListener(_noteListChangedListenerId);
     super.dispose();
   }
 }

@@ -5,7 +5,7 @@ import 'package:private_notes/logic/dropbox_handler.dart';
 class NoteHandler {
   static final List<Note> notes = List<Note>.empty(growable: true);
   static final List<Map> _noteListChangedListeners = List.empty(growable: true);
-  static final ValueNotifier selectedNote = ValueNotifier(0);
+  static final ValueNotifier selectedNoteI = ValueNotifier(0);
 
   //ANCHOR listeners
   static void addNoteListChangedListener(
@@ -29,6 +29,16 @@ class NoteHandler {
     }
   }
 
+  static void setSelectedNoteI(int index) {
+    selectedNoteI.value = index;
+    Note selectedNote = notes[index];
+    if (!selectedNote.isLoaded) {
+      DropboxHandler.getInstance()
+          .fillNoteContent(selectedNote)
+          .then((value) => callNoteListChangedListeners());
+    }
+  }
+
   //ANCHOR note list editors
   static void loadNotes() async {
     notes.clear();
@@ -40,13 +50,13 @@ class NoteHandler {
     notes.add(note);
 
     if (selectNote == true) {
-      selectedNote.value = notes.length - 1;
+      selectedNoteI.value = notes.length - 1;
     }
     callNoteListChangedListeners();
   }
 
   static void deleteSelectedNote({bool? selectPriorNote}) {
-    deleteNote(selectedNote.value, selectPriorNote: selectPriorNote);
+    deleteNote(selectedNoteI.value, selectPriorNote: selectPriorNote);
   }
 
   static void deleteNote(int noteIndex, {bool? selectPriorNote}) {
@@ -56,12 +66,12 @@ class NoteHandler {
     callNoteListChangedListeners();
 
     if (noteIndex != 0 && selectPriorNote == true) {
-      selectedNote.value -= 1;
+      selectedNoteI.value -= 1;
     }
-    selectedNote.notifyListeners();
+    selectedNoteI.notifyListeners();
   }
 
   static Note? getCurrentNote() {
-    return notes.isNotEmpty ? notes[selectedNote.value] : null;
+    return notes.isNotEmpty ? notes[selectedNoteI.value] : null;
   }
 }

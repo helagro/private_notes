@@ -114,8 +114,6 @@ class DropboxHandler {
       String fileName = entry["name"];
       Note note =
           Note(fileName.replaceAll(RegExp(r'\.*(.txt)'), ""), "placeholder");
-      await fillNoteContent(note);
-      print("${note.title} word ${note.content}");
       notes.add(note);
     }
     return notes;
