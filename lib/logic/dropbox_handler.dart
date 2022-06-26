@@ -79,6 +79,7 @@ class DropboxHandler {
     Map<String, dynamic> responseBody = jsonDecode(res.body);
     _token = Future.value(responseBody["access_token"]);
     _storage.write(key: _dropboxTokenKey, value: await _token);
+    //print("troy :${await _token}");
   }
 
   Future<List<Note>> getNotes() async {
@@ -103,17 +104,37 @@ class DropboxHandler {
         body: jsonEncode(body));
     Map<String, dynamic> responseBody = jsonDecode(res.body);
 
-    return _getNotesFromHttpResponseBody(responseBody);
+    return await _getNotesFromHttpResponseBody(responseBody);
   }
 
-  List<Note> _getNotesFromHttpResponseBody(Map<String, dynamic> responseBody) {
+  Future<List<Note>> _getNotesFromHttpResponseBody(
+      Map<String, dynamic> responseBody) async {
     List<Note> notes = List<Note>.empty(growable: true);
     for (final entry in responseBody["entries"]) {
       String fileName = entry["name"];
-      notes.add(
-          Note(fileName.replaceAll(RegExp(r'\.*(.txt)'), ""), "placeholder"));
+      Note note =
+          Note(fileName.replaceAll(RegExp(r'\.*(.txt)'), ""), "placeholder");
+      await fillNoteContent(note);
+      print("${note.title} word ${note.content}");
+      notes.add(note);
     }
     return notes;
+  }
+
+  Future<void> fillNoteContent(Note note) async {
+    Map<String, String> dropboxAPIArg = {
+      "path": "/${note.title}.txt",
+    };
+
+    Map<String, String> headers = {
+      "Authorization": "Bearer ${await _token}",
+      "Dropbox-API-Arg": jsonEncode(dropboxAPIArg)
+    };
+
+    http.Response res = await http.post(
+        Uri.parse("https://content.dropboxapi.com/2/files/download"),
+        headers: headers);
+    note.content = res.body;
   }
 
   Future<void> upload(Note note) async {

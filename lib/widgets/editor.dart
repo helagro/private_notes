@@ -49,4 +49,10 @@ class _EditorWidgetState extends State<EditorWidget> {
   void onTextChange(final String text) {
     NoteHandler.getCurrentNote()?.content = text;
   }
+
+  @override
+  void dispose() {
+    NoteHandler.selectedNote.removeListener(fillWithNoteContent);
+    super.dispose();
+  }
 }
