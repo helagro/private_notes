@@ -30,11 +30,13 @@ class NoteHandler {
   }
 
   static void setSelectedNoteI(int index) {
+    DropboxHandler dropboxHandler = DropboxHandler.getInstance();
+    if (getCurrentNote() != null) dropboxHandler.upload(getCurrentNote()!);
+
     selectedNoteI.value = index;
-    Note selectedNote = notes[index];
-    if (!selectedNote.isLoaded) {
-      DropboxHandler.getInstance()
-          .fillNoteContent(selectedNote)
+    if (!getCurrentNote()!.isLoaded) {
+      dropboxHandler
+          .fillNoteContent(getCurrentNote()!)
           .then((value) => callNoteListChangedListeners());
     }
   }

@@ -113,7 +113,7 @@ class DropboxHandler {
     for (final entry in responseBody["entries"]) {
       String fileName = entry["name"];
       Note note =
-          Note(fileName.replaceAll(RegExp(r'\.*(.txt)'), ""), "placeholder");
+          Note(fileName.replaceAll(RegExp(r'\.*(.txt)'), ""), "Loading...");
       notes.add(note);
     }
     return notes;
@@ -153,6 +153,5 @@ class DropboxHandler {
         headers: headers,
         body: utf8.encode(note.content));
     //Map<String, dynamic> responseBody = jsonDecode(res.body);
-    print(res.body + "market");
   }
 }
