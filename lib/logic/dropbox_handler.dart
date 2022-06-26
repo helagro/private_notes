@@ -109,7 +109,9 @@ class DropboxHandler {
   List<Note> _getNotesFromHttpResponseBody(Map<String, dynamic> responseBody) {
     List<Note> notes = List<Note>.empty(growable: true);
     for (final entry in responseBody["entries"]) {
-      notes.add(Note(entry["name"], "placeholder"));
+      String fileName = entry["name"];
+      notes.add(
+          Note(fileName.replaceAll(RegExp(r'\.*(.txt)'), ""), "placeholder"));
     }
     return notes;
   }

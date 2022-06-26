@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:private_notes/data_types/note.dart';
+import 'package:private_notes/logic/dropbox_handler.dart';
 
 class NoteHandler {
   static final List<Note> notes = List<Note>.empty(growable: true);
@@ -29,6 +30,12 @@ class NoteHandler {
   }
 
   //ANCHOR note list editors
+  static void loadNotes() async {
+    notes.clear();
+    notes.addAll(await DropboxHandler.getInstance().getNotes());
+    callNoteListChangedListeners();
+  }
+
   static void addNote(Note note, {bool? selectNote}) {
     notes.add(note);
 

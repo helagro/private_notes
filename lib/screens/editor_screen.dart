@@ -21,17 +21,11 @@ class EditorScreen extends StatelessWidget {
   void handleDropbox(final BuildContext context) {
     DropboxHandler dropboxHandler = DropboxHandler.getInstance();
     dropboxHandler.hasToken().then((hasToken) {
-      print("wallmart $hasToken");
       if (hasToken) {
-        loadNotes(dropboxHandler);
+        NoteHandler.loadNotes();
       } else {
         Navigator.pushNamed(context, "/login");
       }
     });
-  }
-
-  void loadNotes(DropboxHandler dropboxHandler) async {
-    NoteHandler.notes.addAll(await dropboxHandler.getNotes());
-    NoteHandler.callNoteListChangedListeners();
   }
 }
