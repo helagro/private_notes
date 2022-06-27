@@ -12,7 +12,7 @@ class AccessCodeInput extends StatefulWidget {
 class _AccessCodeInputState extends State<AccessCodeInput> {
   final DropboxHandler _dropboxHandler = DropboxHandler.getInstance();
   final TextEditingController _controller = TextEditingController();
-  bool _authCodeFormatIsValid = false;
+  bool authCodeFormatIsValid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
               onChanged: onChanged,
             ),
           ),
-          _authCodeFormatIsValid
+          authCodeFormatIsValid
               ? IconButtonMain(
                   iconData: CupertinoIcons.arrow_right_circle,
                   onPressed: () => submitCode(context))
@@ -40,9 +40,9 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
   void onChanged(String value) {
     final bool newAuthCodeFormatIsValid = value.isNotEmpty;
 
-    if (newAuthCodeFormatIsValid != _authCodeFormatIsValid) {
+    if (newAuthCodeFormatIsValid != authCodeFormatIsValid) {
       setState(() {
-        _authCodeFormatIsValid = newAuthCodeFormatIsValid;
+        authCodeFormatIsValid = newAuthCodeFormatIsValid;
       });
     }
   }

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:opnot/logic/note_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import '../data_types/note.dart';
@@ -131,8 +132,27 @@ class DropboxHandler {
     http.Response res = await http.post(
         Uri.parse("https://content.dropboxapi.com/2/files/download"),
         headers: headers);
+
+    if (res.statusCode != 200) return _handleFillNoteContentError(res, note);
+
     note.content = res.body;
     note.isLoaded = true;
+    print("${res.headers}, \n\n ${res.statusCode} ");
+  }
+
+  void _handleFillNoteContentError(http.Response res, Note note) {
+    if (res.headers["content-type"] != "application/json") return;
+
+    final String error = jsonDecode(res.body)["error_summary"];
+    final String cleanedError = error.replaceAll(RegExp(r"\/(\.\.\.)$"), "");
+
+    switch (cleanedError) {
+      case "path/not_found/":
+        NoteHandler.deleteNote(NoteHandler.notes.indexOf(note));
+        return;
+    }
+
+    note.content = "Loading failed; Error:$cleanedError";
   }
 
   Future<void> upload(Note note) async {
