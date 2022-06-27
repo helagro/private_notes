@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:opnot/logic/dropbox_handler.dart';
+import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/logic/note_handler.dart';
 import 'desktop/editor_screen_desktop.dart';
 import 'mobile/editor_and_list_mobile.dart';
@@ -19,8 +19,7 @@ class EditorScreen extends StatelessWidget {
   }
 
   void handleDropbox(final BuildContext context) {
-    DropboxHandler dropboxHandler = DropboxHandler.getInstance();
-    dropboxHandler.hasToken().then((hasToken) {
+    DropboxHandler.getAuth().hasToken().then((hasToken) {
       if (hasToken) {
         NoteHandler.loadNoteList();
       } else {

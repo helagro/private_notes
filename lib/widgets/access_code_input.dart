@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:opnot/widgets/icon_button_main.dart';
 
-import '../logic/dropbox_handler.dart';
+import '../logic/dropbox/dropbox_handler.dart';
 
 class AccessCodeInput extends StatefulWidget {
   @override
@@ -10,7 +10,6 @@ class AccessCodeInput extends StatefulWidget {
 }
 
 class _AccessCodeInputState extends State<AccessCodeInput> {
-  final DropboxHandler _dropboxHandler = DropboxHandler.getInstance();
   final TextEditingController _controller = TextEditingController();
   bool authCodeFormatIsValid = false;
 
@@ -48,7 +47,7 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
   }
 
   void submitCode(BuildContext context) async {
-    await _dropboxHandler.generateToken(_controller.text);
+    await DropboxHandler.getAuth().generateToken(_controller.text);
 
     if (!mounted) return;
     Navigator.pushNamed(context, "/editor");

@@ -1,87 +1,14 @@
 import 'dart:convert';
-import 'dart:math';
 
-import 'package:crypto/crypto.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:opnot/logic/note_handler.dart';
-import 'package:url_launcher/url_launcher.dart';
+import '../../data_types/note.dart';
+import '../note_handler.dart';
 import 'package:http/http.dart' as http;
-import '../data_types/note.dart';
 
-class DropboxHandler {
-  static DropboxHandler? _instance;
-  static const _appKey = "y4hmk1pjerg1vvp";
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  static const _dropboxTokenKey = "dropboxToken";
-  String? _codeVerifier;
-  String? _codeChallenge;
-  Future<String?>? _token;
+class DropboxFileManager {
+  DropboxFileManager(this._token);
 
-  static DropboxHandler getInstance() {
-    _instance ??= DropboxHandler(19246);
-    return _instance!;
-  }
+  final Future<String?> _token;
 
-  DropboxHandler(int code) {
-    if (code != 19246) return;
-    _readToken();
-  }
-
-  void _readToken() async {
-    _token = _storage.read(key: _dropboxTokenKey);
-  }
-
-  Future<bool> hasToken() async {
-    String? tokenValue = await _token;
-    return tokenValue != null;
-  }
-
-  void authorize() {
-    _generateCodeChallengePair();
-    launchUrl(
-        Uri.parse(
-            "https://www.dropbox.com/oauth2/authorize?client_id=$_appKey&response_type=code&code_challenge_method=S256&code_challenge=$_codeChallenge"),
-        webOnlyWindowName: "_blank",
-        mode: LaunchMode.externalApplication);
-  }
-
-  void _generateCodeChallengePair() {
-    _codeVerifier = _createCodeVerifier();
-    final byteCodeChallenge = sha256.convert(utf8.encode(_codeVerifier!)).bytes;
-    final base64CodeChallenge =
-        const Base64Encoder.urlSafe().convert(byteCodeChallenge);
-    _codeChallenge = base64CodeChallenge.replaceAll("=", "").toString();
-  }
-
-  String _createCodeVerifier() {
-    const characters =
-        "abcdefghijklmnopqrstuvwxyzACBDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    final random = Random.secure();
-    final codeVerifierBuffer = StringBuffer();
-
-    for (int i = 0; i < 128; i++) {
-      int randomCharactersIndex = random.nextInt(characters.length);
-      codeVerifierBuffer.write(characters[randomCharactersIndex]);
-    }
-    return codeVerifierBuffer.toString();
-  }
-
-  Future<void> generateToken(String str) async {
-    Map<String, String> body = {
-      "code": str,
-      "grant_type": "authorization_code",
-      "client_id": _appKey,
-      "code_verifier": _codeVerifier!
-    };
-
-    http.Response res = await http
-        .post(Uri.parse("https://api.dropbox.com/oauth2/token"), body: body);
-    Map<String, dynamic> responseBody = jsonDecode(res.body);
-    _token = Future.value(responseBody["access_token"]);
-    _storage.write(key: _dropboxTokenKey, value: await _token);
-  }
-
-  //ANCHOR content
   Future<List<Note>> getNotes() async {
     Map<String, String> headers = {
       "Authorization": "Bearer ${await _token}",
@@ -102,6 +29,9 @@ class DropboxHandler {
         Uri.parse("https://api.dropboxapi.com/2/files/list_folder"),
         headers: headers,
         body: jsonEncode(body));
+
+    if (res.statusCode != 200) throw Exception("Failed to get note list");
+
     Map<String, dynamic> responseBody = jsonDecode(res.body);
 
     return await _getNotesFromHttpResponseBody(responseBody);
@@ -133,15 +63,15 @@ class DropboxHandler {
         Uri.parse("https://content.dropboxapi.com/2/files/download"),
         headers: headers);
 
-    if (res.statusCode != 200) return _handleFillNoteContentError(res, note);
+    if (res.statusCode != 200) return _handleFillNoteContentErrors(res, note);
 
     note.content = res.body;
     note.isLoaded = true;
-    print("${res.headers}, \n\n ${res.statusCode} ");
   }
 
-  void _handleFillNoteContentError(http.Response res, Note note) {
-    if (res.headers["content-type"] != "application/json") return;
+  void _handleFillNoteContentErrors(http.Response res, Note note) {
+    if (res.headers["content-type"] != "application/json")
+      return print("Error in fillNoteContent but no error code");
 
     final String error = jsonDecode(res.body)["error_summary"];
     final String cleanedError = error.replaceAll(RegExp(r"\/(\.\.\.)$"), "");

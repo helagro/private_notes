@@ -1,5 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:opnot/logic/dropbox_handler.dart';
+import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/widgets/access_code_input.dart';
 
 import '../data_types/note.dart';
@@ -10,7 +12,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  DropboxHandler dropboxHandler = DropboxHandler.getInstance();
   bool showAccessCodeField = false;
 
   @override
@@ -57,9 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void onConnectDropboxPress() {
-    dropboxHandler.authorize();
     setState(() {
       showAccessCodeField = true;
     });
+    Timer(
+        const Duration(milliseconds: 500), DropboxHandler.getAuth().authorize);
   }
 }

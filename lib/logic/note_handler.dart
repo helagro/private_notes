@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opnot/data_types/note.dart';
-import 'package:opnot/logic/dropbox_handler.dart';
+import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 
 class NoteHandler {
   static final List<Note> notes = List<Note>.empty(growable: true);
@@ -39,20 +39,20 @@ class NoteHandler {
   //ANCHOR storage
   static void loadCurrentNote() {
     if (getCurrentNote() == null || getCurrentNote()!.isLoaded) return;
-    DropboxHandler.getInstance()
+    DropboxHandler.getFileManager()
         .fillNoteContent(getCurrentNote()!)
         .then((value) => callNoteListChangedListeners());
   }
 
   static void saveCurrentNote() {
     if (getCurrentNote() == null) return;
-    DropboxHandler.getInstance().upload(getCurrentNote()!);
+    DropboxHandler.getFileManager().upload(getCurrentNote()!);
   }
 
   //ANCHOR note list editors
   static void loadNoteList() async {
     notes.clear();
-    notes.addAll(await DropboxHandler.getInstance().getNotes());
+    notes.addAll(await DropboxHandler.getFileManager().getNotes());
     callNoteListChangedListeners();
     loadCurrentNote();
   }
@@ -73,7 +73,7 @@ class NoteHandler {
   static void deleteNote(int noteIndex, {bool? selectPriorNote}) {
     if (notes.isEmpty) return;
 
-    DropboxHandler.getInstance().delete(notes[noteIndex]);
+    DropboxHandler.getFileManager().delete(notes[noteIndex]);
     notes.removeAt(noteIndex);
     callNoteListChangedListeners();
 
