@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:opnot/widgets/icon_button_main.dart';
 
 import '../logic/dropbox/dropbox_handler.dart';
 
 class AccessCodeInput extends StatefulWidget {
+  const AccessCodeInput({Key? key}) : super(key: key);
+
   @override
   State<AccessCodeInput> createState() => _AccessCodeInputState();
 }

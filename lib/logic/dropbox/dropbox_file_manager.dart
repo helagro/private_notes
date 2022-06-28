@@ -1,13 +1,15 @@
 import 'dart:convert';
 
+import 'package:opnot/logic/dropbox/dropbox_helpers.dart';
+
 import '../../data_types/note.dart';
 import '../note_handler.dart';
 import 'package:http/http.dart' as http;
 
 class DropboxFileManager {
   DropboxFileManager(this._token);
-
   final Future<String?> _token;
+  static const _mainUrl = "https://api.dropboxapi.com/2/files";
 
   Future<List<Note>> getNotes() async {
     Map<String, String> headers = {
@@ -25,10 +27,8 @@ class DropboxFileManager {
       "recursive": false
     };
 
-    http.Response res = await http.post(
-        Uri.parse("https://api.dropboxapi.com/2/files/list_folder"),
-        headers: headers,
-        body: jsonEncode(body));
+    http.Response res = await http.post(Uri.parse("$_mainUrl/list_folder"),
+        headers: headers, body: jsonEncode(body));
 
     if (res.statusCode != 200) throw Exception("Failed to get note list");
 
@@ -51,7 +51,7 @@ class DropboxFileManager {
 
   Future<void> fillNoteContent(Note note) async {
     Map<String, String> dropboxAPIArg = {
-      "path": "/${note.title}.txt",
+      "path": DropboxHelpers.getNoteFilePath(note),
     };
 
     Map<String, String> headers = {
@@ -59,9 +59,8 @@ class DropboxFileManager {
       "Dropbox-API-Arg": jsonEncode(dropboxAPIArg)
     };
 
-    http.Response res = await http.post(
-        Uri.parse("https://content.dropboxapi.com/2/files/download"),
-        headers: headers);
+    http.Response res =
+        await http.post(Uri.parse("$_mainUrl/download"), headers: headers);
 
     if (res.statusCode != 200) return _handleFillNoteContentErrors(res, note);
 
@@ -70,25 +69,26 @@ class DropboxFileManager {
   }
 
   void _handleFillNoteContentErrors(http.Response res, Note note) {
-    if (res.headers["content-type"] != "application/json")
-      return print("Error in fillNoteContent but no error code");
+    if (DropboxHelpers.isResBodyJson(res)) {
+      DropboxHelpers.printWrongResBodyFormat();
+      return;
+    }
 
-    final String error = jsonDecode(res.body)["error_summary"];
-    final String cleanedError = error.replaceAll(RegExp(r"\/(\.\.\.)$"), "");
+    final String error = DropboxHelpers.getErrorSummary(res);
 
-    switch (cleanedError) {
+    switch (error) {
       case "path/not_found/":
         NoteHandler.deleteNote(NoteHandler.notes.indexOf(note));
         return;
     }
 
-    note.content = "Loading failed; Error:$cleanedError";
+    note.content = "Loading failed; Error:$error";
   }
 
   Future<void> upload(Note note) async {
     if (!note.isLoaded) return;
     Map<String, String> dropboxAPIArg = {
-      "path": "/${note.title}.txt",
+      "path": DropboxHelpers.getNoteFilePath(note),
       "mode": "overwrite"
     };
 
@@ -99,10 +99,8 @@ class DropboxFileManager {
       "Accept": "application/octet-stream"
     };
 
-    http.Response res = await http.post(
-        Uri.parse("https://content.dropboxapi.com/2/files/upload"),
-        headers: headers,
-        body: utf8.encode(note.content));
+    http.Response res = await http.post(Uri.parse("$_mainUrl/upload"),
+        headers: headers, body: utf8.encode(note.content));
     //Map<String, dynamic> responseBody = jsonDecode(res.body);
   }
 
@@ -112,11 +110,9 @@ class DropboxFileManager {
       "Content-Type": "application/json",
     };
 
-    Map<String, String> body = {"path": "/${note.title}.txt"};
+    Map<String, String> body = {"path": DropboxHelpers.getNoteFilePath(note)};
 
-    http.Response res = await http.post(
-        Uri.parse("https://api.dropboxapi.com/2/files/delete_v2"),
-        headers: headers,
-        body: jsonEncode(body));
+    http.Response res = await http.post(Uri.parse("$_mainUrl/delete_v2"),
+        headers: headers, body: jsonEncode(body));
   }
 }
