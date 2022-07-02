@@ -8,8 +8,10 @@ import 'package:http/http.dart' as http;
 
 class DropboxAuth {
   static const _appKey = "y4hmk1pjerg1vvp";
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   static const _dropboxTokenKey = "dropboxToken";
+  static const _dropboxTokenExpireKey = "dropboxExpire";
+
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   String? _codeVerifier;
   String? _codeChallenge;
   late Future<String?> _token;
@@ -18,8 +20,24 @@ class DropboxAuth {
     _token = _storage.read(key: _dropboxTokenKey);
   }
 
+  void refreshTokenIfNeeded() async {
+    int? tokenExpireTime = await loadTokenExpireTime();
+    if (tokenExpireTime == null) return;
+    bool tokenHasExpired = tokenExpireTime < DateTime.now().millisecond;
+    if (tokenHasExpired) {}
+  }
+
+  Future<int?> loadTokenExpireTime() async {
+    String? dropboxTokenExpireTimeStr =
+        await _storage.read(key: _dropboxTokenExpireKey);
+    if (dropboxTokenExpireTimeStr == null) return null;
+    int tokenExpireTime = int.parse(dropboxTokenExpireTimeStr);
+    return tokenExpireTime;
+  }
+
   Future<bool> hasToken() async {
     String? tokenValue = await _token;
+
     return tokenValue != null;
   }
 
@@ -29,11 +47,10 @@ class DropboxAuth {
 
   void authorize() {
     _generateCodeChallengePair();
-    launchUrl(
-        Uri.parse(
-            "https://www.dropbox.com/oauth2/authorize?client_id=$_appKey&response_type=code&code_challenge_method=S256&code_challenge=$_codeChallenge"),
-        webOnlyWindowName: "_blank",
-        mode: LaunchMode.externalApplication);
+    String dropboxAuthUrl =
+        "https://www.dropbox.com/oauth2/authorize?client_id=$_appKey&response_type=code&code_challenge_method=S256&code_challenge=$_codeChallenge&force_reapprove=false&token_access_type=offline";
+    launchUrl(Uri.parse(dropboxAuthUrl),
+        webOnlyWindowName: "_blank", mode: LaunchMode.externalApplication);
   }
 
   void _generateCodeChallengePair() {
@@ -72,7 +89,19 @@ class DropboxAuth {
 
     Map<String, dynamic> responseBody = jsonDecode(res.body);
     _token = Future.value(responseBody["access_token"]);
+    print("tesst");
+
     _storage.write(key: _dropboxTokenKey, value: await _token);
+    _storage.write(
+        key: _dropboxTokenExpireKey, value: getTokenExpireTime(responseBody));
+  }
+
+  String getTokenExpireTime(Map<String, dynamic> responseBody) {
+    DateTime timeNow = DateTime.now();
+    int expiresInMillis = int.parse(responseBody["expires_in"]) * 1000;
+    Duration expiresInDuration = Duration(milliseconds: expiresInMillis);
+    DateTime tokenExpireTime = timeNow.add(expiresInDuration);
+    return tokenExpireTime.millisecond.toString();
   }
 
   void _handleGenerateTokenErrors(final http.Response res) {

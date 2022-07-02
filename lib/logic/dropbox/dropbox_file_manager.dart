@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:opnot/logic/debug.dart';
 import 'package:opnot/logic/dropbox/dropbox_helpers.dart';
 
 import '../../data_types/note.dart';
@@ -33,6 +34,7 @@ class DropboxFileManager {
     if (res.statusCode != 200) throw Exception("Failed to get note list");
 
     Map<String, dynamic> responseBody = jsonDecode(res.body);
+    Debug.log("Loaded note list");
 
     return await _getNotesFromHttpResponseBody(responseBody);
   }
@@ -66,6 +68,7 @@ class DropboxFileManager {
 
     note.content = res.body;
     note.isLoaded = true;
+    Debug.log("Downloaded note content for ${note.title}");
   }
 
   void _handleFillNoteContentErrors(http.Response res, Note note) {
