@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/widgets/note_list_content.dart';
 import '../logic/note_handler.dart';
-import 'note_list_item.dart';
 
 class NoteList extends StatefulWidget {
   final Function? onNoteSelected;
@@ -33,16 +33,9 @@ class _NoteListState extends State<NoteList> {
         child: SizedBox.expand(
       child: Container(
         color: Colors.blue,
-        child: ListView.builder(
-          itemBuilder: (context, noteListIndex) {
-            return NoteListItem(
-              onClick: onNoteListItemClicked,
-              noteListIndex: noteListIndex,
-              isSelected: noteListIndex == NoteHandler.selectedNoteI.value &&
-                  widget.highlightSelectedNote,
-            );
-          },
-          itemCount: NoteHandler.notes.length,
+        child: NoteListContent(
+          onNoteListItemClicked: onNoteListItemClicked,
+          highlightSelectedNote: widget.highlightSelectedNote,
         ),
       ),
     ));

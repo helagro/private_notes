@@ -9,11 +9,12 @@ import 'package:http/http.dart' as http;
 
 class DropboxFileManager {
   DropboxFileManager(this._token);
-  final Future<String?> _token;
   static const _mainUrl = "https://api.dropboxapi.com/2/files";
   static const _contentUrl = "https://content.dropboxapi.com/2/files";
+  final Future<String?> _token;
+  bool hasListOfNotes = false;
 
-  Future<List<Note>> getNotes() async {
+  Future<List<Note>> getNoteList() async {
     Map<String, String> headers = {
       "Authorization": "Bearer ${await _token}",
       "Content-Type": "application/json",
@@ -37,6 +38,7 @@ class DropboxFileManager {
 
     Map<String, dynamic> responseBody = jsonDecode(res.body);
 
+    hasListOfNotes = true;
     return await _getNotesFromHttpResponseBody(responseBody);
   }
 
@@ -45,7 +47,6 @@ class DropboxFileManager {
     List<Note> notes = List<Note>.empty(growable: true);
     for (final entry in responseBody["entries"]) {
       String fileName = entry["name"];
-      print("fileName $fileName");
       Note note =
           Note(fileName.replaceAll(RegExp(r'\.*(.txt)'), ""), "Loading...");
       notes.add(note);
@@ -62,7 +63,6 @@ class DropboxFileManager {
       "Authorization": "Bearer ${await _token}",
       "Dropbox-API-Arg": jsonEncode(dropboxAPIArg)
     };
-    print("path ${dropboxAPIArg["path"]} and ${headers["Dropbox-API-Arg"]}");
 
     http.Response res =
         await http.post(Uri.parse("$_contentUrl/download"), headers: headers);
@@ -71,7 +71,7 @@ class DropboxFileManager {
 
     note.content = res.body;
     note.isLoaded = true;
-    Debug.log("Downloaded note content for ${note.title}");
+    Debug.log("Downloaded note content for ”${note.title}\"");
   }
 
   void _handleFillNoteContentErrors(http.Response res, Note note) {
@@ -114,7 +114,7 @@ class DropboxFileManager {
 
     http.Response res = await http.post(Uri.parse("$_contentUrl/upload"),
         headers: headers, body: utf8.encode(note.content));
-    Debug.log("Uploaded note ${note.title}");
+    Debug.log("Uploaded note \"${note.title}\"");
     //Map<String, dynamic> responseBody = jsonDecode(res.body);
   }
 
@@ -128,6 +128,6 @@ class DropboxFileManager {
 
     http.Response res = await http.post(Uri.parse("$_mainUrl/delete_v2"),
         headers: headers, body: jsonEncode(body));
-    Debug.log("Deleted note ${note.title}");
+    Debug.log("Deleted note \"${note.title}\"");
   }
 }

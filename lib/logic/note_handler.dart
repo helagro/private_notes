@@ -52,7 +52,7 @@ class NoteHandler {
   //ANCHOR note list editors
   static void loadNoteList() async {
     notes.clear();
-    notes.addAll(await DropboxHandler.getFileManager().getNotes());
+    notes.addAll(await DropboxHandler.getFileManager().getNoteList());
     callNoteListChangedListeners();
     loadCurrentNote();
   }
