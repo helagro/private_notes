@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../logic/note_handler.dart';
+import '../../logic/note_handler.dart';
 
 class NoteListItem extends StatelessWidget {
   const NoteListItem(

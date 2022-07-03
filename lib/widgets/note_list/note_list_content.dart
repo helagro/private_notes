@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/widgets/text_message.dart';
 
-import '../logic/note_handler.dart';
+import '../../logic/note_handler.dart';
 import 'note_list_item.dart';
 
 class NoteListContent extends StatelessWidget {
