@@ -23,7 +23,9 @@ class EditorAndListMobile extends StatelessWidget {
               switch (settings.name) {
                 case "editor/note_list":
                   isOnNoteList = true;
-                  builder = (BuildContext _) => const NoteListScreenMobile();
+                  builder = (BuildContext _) => NoteListScreenMobile(
+                        navKey: _navigatorKey,
+                      );
                   break;
                 case "editor/editor":
                   isOnNoteList = false;
@@ -36,9 +38,10 @@ class EditorAndListMobile extends StatelessWidget {
               return MaterialPageRoute<void>(
                   builder: builder, settings: settings);
             })),
-        onWillPop: () {
+        onWillPop: () async {
+          print("is $isOnNoteList ${_navigatorKey.currentState}");
           _navigatorKey.currentState?.maybePop();
-          return Future.value(isOnNoteList);
+          return isOnNoteList;
         });
   }
 }

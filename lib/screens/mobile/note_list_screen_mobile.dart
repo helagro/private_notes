@@ -4,7 +4,10 @@ import '../../widgets/note_list/note_list.dart';
 import '../../widgets/note_list_options.dart';
 
 class NoteListScreenMobile extends StatelessWidget {
-  const NoteListScreenMobile({Key? key}) : super(key: key);
+  final GlobalKey<NavigatorState> navKey;
+
+  const NoteListScreenMobile({Key? key, required this.navKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,6 @@ class NoteListScreenMobile extends StatelessWidget {
   }
 
   void goToEditor(context) {
-    Navigator.of(context).pushNamed('editor/editor');
+    navKey.currentState?.pushNamed('editor/editor');
   }
 }

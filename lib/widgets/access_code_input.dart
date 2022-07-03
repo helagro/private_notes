@@ -16,23 +16,26 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 450),
-      child: Row(
-        children: [
-          Expanded(
-            child: CupertinoTextField(
-              controller: _controller,
-              placeholder: "Enter access code here",
-              onChanged: onChanged,
+    return Container(
+      margin: const EdgeInsets.all(5),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 450),
+        child: Row(
+          children: [
+            Expanded(
+              child: CupertinoTextField(
+                controller: _controller,
+                placeholder: "Enter access code here",
+                onChanged: onChanged,
+              ),
             ),
-          ),
-          authCodeFormatIsValid
-              ? IconButtonMain(
-                  iconData: CupertinoIcons.arrow_right_circle,
-                  onPressed: () => submitCode(context))
-              : Container()
-        ],
+            authCodeFormatIsValid
+                ? IconButtonMain(
+                    iconData: CupertinoIcons.arrow_right_circle,
+                    onPressed: () => submitCode(context))
+                : Container()
+          ],
+        ),
       ),
     );
   }

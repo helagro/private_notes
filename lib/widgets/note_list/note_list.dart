@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/logic/note_handler.dart';
 import 'package:opnot/widgets/note_list/note_list_content.dart';
-import '../../logic/note_handler.dart';
 
 class NoteList extends StatefulWidget {
   final Function? onNoteSelected;

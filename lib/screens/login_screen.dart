@@ -26,11 +26,26 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 500),
+                constraints: const BoxConstraints(maxWidth: 450),
                 child: Container(
                   margin: EdgeInsets.only(bottom: screenHeight * 0.2),
                   child: Column(
                     children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 5),
+                        child: const Text(
+                          "Opnot",
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: const Text(
+                          "This app uses Dropbox and will store the notes in it's own folder on your Dropbox account.",
+                          style: TextStyle(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                       TextButton(
                         style: ButtonStyle(
                             fixedSize:
@@ -45,7 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(
                         height: 5,
                       ),
-                      showAccessCodeField ? AccessCodeInput() : Container()
+                      showAccessCodeField
+                          ? const AccessCodeInput()
+                          : Container()
                     ],
                   ),
                 ),
