@@ -11,6 +11,7 @@ class DropboxFileManager {
   DropboxFileManager(this._token);
   final Future<String?> _token;
   static const _mainUrl = "https://api.dropboxapi.com/2/files";
+  static const _contentUrl = "https://content.dropboxapi.com/2/files";
 
   Future<List<Note>> getNotes() async {
     Map<String, String> headers = {
@@ -32,9 +33,9 @@ class DropboxFileManager {
         headers: headers, body: jsonEncode(body));
 
     if (res.statusCode != 200) throw Exception("Failed to get note list");
+    Debug.log("Loaded note list");
 
     Map<String, dynamic> responseBody = jsonDecode(res.body);
-    Debug.log("Loaded note list");
 
     return await _getNotesFromHttpResponseBody(responseBody);
   }
@@ -44,6 +45,7 @@ class DropboxFileManager {
     List<Note> notes = List<Note>.empty(growable: true);
     for (final entry in responseBody["entries"]) {
       String fileName = entry["name"];
+      print("fileName $fileName");
       Note note =
           Note(fileName.replaceAll(RegExp(r'\.*(.txt)'), ""), "Loading...");
       notes.add(note);
@@ -60,9 +62,10 @@ class DropboxFileManager {
       "Authorization": "Bearer ${await _token}",
       "Dropbox-API-Arg": jsonEncode(dropboxAPIArg)
     };
+    print("path ${dropboxAPIArg["path"]} and ${headers["Dropbox-API-Arg"]}");
 
     http.Response res =
-        await http.post(Uri.parse("$_mainUrl/download"), headers: headers);
+        await http.post(Uri.parse("$_contentUrl/download"), headers: headers);
 
     if (res.statusCode != 200) return _handleFillNoteContentErrors(res, note);
 
@@ -72,12 +75,19 @@ class DropboxFileManager {
   }
 
   void _handleFillNoteContentErrors(http.Response res, Note note) {
+    if (res.statusCode == 404) {
+      Debug.log(
+          "Could not find note called \"${note.title}\" in dropbox; ${res.body}");
+      return;
+    }
+
     if (DropboxHelpers.isResBodyJson(res)) {
-      DropboxHelpers.printWrongResBodyFormat();
+      DropboxHelpers.printWrongResBodyFormat(res);
       return;
     }
 
     final String error = DropboxHelpers.getErrorSummary(res);
+    Debug.log("_handleFillNoteContentErrors; Error:$error");
 
     switch (error) {
       case "path/not_found/":
@@ -102,8 +112,9 @@ class DropboxFileManager {
       "Accept": "application/octet-stream"
     };
 
-    http.Response res = await http.post(Uri.parse("$_mainUrl/upload"),
+    http.Response res = await http.post(Uri.parse("$_contentUrl/upload"),
         headers: headers, body: utf8.encode(note.content));
+    Debug.log("Uploaded note ${note.title}");
     //Map<String, dynamic> responseBody = jsonDecode(res.body);
   }
 
@@ -117,5 +128,6 @@ class DropboxFileManager {
 
     http.Response res = await http.post(Uri.parse("$_mainUrl/delete_v2"),
         headers: headers, body: jsonEncode(body));
+    Debug.log("Deleted note ${note.title}");
   }
 }

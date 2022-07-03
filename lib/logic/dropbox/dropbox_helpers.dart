@@ -10,8 +10,8 @@ class DropboxHelpers {
     return res.headers["content-type"] != "application/json";
   }
 
-  static void printWrongResBodyFormat() {
-    Debug.log("Wrong result body format");
+  static void printWrongResBodyFormat(http.Response response) {
+    Debug.log("Wrong result body format ${response.body}");
   }
 
   static String getErrorSummary(final http.Response res) {

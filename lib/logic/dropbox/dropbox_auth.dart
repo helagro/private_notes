@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:opnot/logic/debug.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,13 +19,16 @@ class DropboxAuth {
 
   void readToken() async {
     _token = _storage.read(key: _dropboxTokenKey);
+    refreshTokenIfNeeded();
   }
 
   void refreshTokenIfNeeded() async {
     int? tokenExpireTime = await loadTokenExpireTime();
     if (tokenExpireTime == null) return;
     bool tokenHasExpired = tokenExpireTime < DateTime.now().millisecond;
-    if (tokenHasExpired) {}
+    if (tokenHasExpired) {
+      Debug.log("Token has expired, refreshing...");
+    }
   }
 
   Future<int?> loadTokenExpireTime() async {
@@ -74,9 +78,9 @@ class DropboxAuth {
     return codeVerifierBuffer.toString();
   }
 
-  Future<void> generateToken(String str) async {
+  Future<void> generateToken(String authCode) async {
     Map<String, String> body = {
-      "code": str,
+      "code": authCode,
       "grant_type": "authorization_code",
       "client_id": _appKey,
       "code_verifier": _codeVerifier!
@@ -85,26 +89,31 @@ class DropboxAuth {
     http.Response res = await http
         .post(Uri.parse("https://api.dropbox.com/oauth2/token"), body: body);
 
-    if (res.statusCode != 200) return _handleGenerateTokenErrors(res);
+    if (res.statusCode != 200) {
+      _handleGenerateTokenErrors(res);
+      return;
+    }
 
     Map<String, dynamic> responseBody = jsonDecode(res.body);
     _token = Future.value(responseBody["access_token"]);
-    print("tesst");
 
     _storage.write(key: _dropboxTokenKey, value: await _token);
     _storage.write(
         key: _dropboxTokenExpireKey, value: getTokenExpireTime(responseBody));
   }
 
+  void _handleGenerateTokenErrors(final http.Response res) {
+    if (res.headers["content-type"] != "application/json") {
+      throw Exception("Invalid content-type for token");
+    }
+  }
+
   String getTokenExpireTime(Map<String, dynamic> responseBody) {
     DateTime timeNow = DateTime.now();
+    print(responseBody["expires_in"]);
     int expiresInMillis = int.parse(responseBody["expires_in"]) * 1000;
     Duration expiresInDuration = Duration(milliseconds: expiresInMillis);
     DateTime tokenExpireTime = timeNow.add(expiresInDuration);
     return tokenExpireTime.millisecond.toString();
-  }
-
-  void _handleGenerateTokenErrors(final http.Response res) {
-    if (res.headers["content-type"] != "application/json") throw Exception();
   }
 }
