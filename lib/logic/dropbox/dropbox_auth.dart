@@ -10,33 +10,20 @@ import 'package:http/http.dart' as http;
 class DropboxAuth {
   static const _appKey = "y4hmk1pjerg1vvp";
   static const _dropboxRefreshTokenKey = "dropboxRefreshToken";
-  static const _dropboxTokenExpireKey = "dropboxExpire";
 
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  String? _codeVerifier;
-  String? _codeChallenge;
-  late Future<String?> _token;
+  late String _codeVerifier;
+  late String _codeChallenge;
+  late Future<String?> _token = Future(readToken);
 
-  void readToken() async {
-    _token = _storage.read(key: _dropboxRefreshTokenKey);
-    refreshTokenIfNeeded();
-  }
-
-  void refreshTokenIfNeeded() async {
-    int? tokenExpireTime = await loadTokenExpireTime();
-    if (tokenExpireTime == null) return;
-    bool tokenHasExpired = tokenExpireTime < DateTime.now().millisecond;
-    if (tokenHasExpired) {
-      Debug.log("Token has expired, refreshing...");
+  Future<String?> readToken() async {
+    String? refreshToken = await _storage.read(key: _dropboxRefreshTokenKey);
+    if (refreshToken == null) {
+      Debug.log("Could not find a stored refresh token");
+      return null;
     }
-  }
 
-  Future<int?> loadTokenExpireTime() async {
-    String? dropboxTokenExpireTimeStr =
-        await _storage.read(key: _dropboxTokenExpireKey);
-    if (dropboxTokenExpireTimeStr == null) return null;
-    int tokenExpireTime = int.parse(dropboxTokenExpireTimeStr);
-    return tokenExpireTime;
+    return await _requestToken(refreshToken: refreshToken);
   }
 
   Future<bool> hasToken() async {
@@ -59,7 +46,7 @@ class DropboxAuth {
 
   void _generateCodeChallengePair() {
     _codeVerifier = _createCodeVerifier();
-    final byteCodeChallenge = sha256.convert(utf8.encode(_codeVerifier!)).bytes;
+    final byteCodeChallenge = sha256.convert(utf8.encode(_codeVerifier)).bytes;
     final base64CodeChallenge =
         const Base64Encoder.urlSafe().convert(byteCodeChallenge);
     _codeChallenge = base64CodeChallenge.replaceAll("=", "").toString();
@@ -78,42 +65,53 @@ class DropboxAuth {
     return codeVerifierBuffer.toString();
   }
 
-  Future<void> generateToken(String authCode) async {
+  Future<void> aquireToken(String authCode) async {
+    _token = _requestToken(authCode: authCode);
+    await _token;
+  }
+
+  Future<String?> _requestToken(
+      {String? authCode, String? refreshToken}) async {
+    assert((authCode != null) ^ (refreshToken != null));
+
+    bool isReAuth = refreshToken != null;
+
     Map<String, String> body = {
-      "code": authCode,
-      "grant_type": "authorization_code",
+      "grant_type": isReAuth ? "refresh_token" : "authorization_code",
       "client_id": _appKey,
-      "code_verifier": _codeVerifier!
+      "code_verifier": _codeVerifier,
+      "refresh_token": refreshToken ?? "",
+      "code": authCode ?? ""
     };
 
-    http.Response res = await http
-        .post(Uri.parse("https://api.dropbox.com/oauth2/token"), body: body);
+    http.Response res;
+    Debug.log("care");
+    try {
+      res = await http.post(Uri.parse("https://api.dropbox.com/oauth2/token"),
+          body: body);
+      Debug.log("video games");
+    } catch (e) {
+      Debug.log("culture $e");
+      throw Exception("intresresfse");
+    }
+    Debug.log("msg");
 
     if (res.statusCode != 200) {
       _handleGenerateTokenErrors(res);
-      return;
+      return null;
     }
 
     Map<String, dynamic> responseBody = jsonDecode(res.body);
-    _token = Future.value(responseBody["access_token"]);
-
-    _storage.write(key: _dropboxRefreshTokenKey, value: await _token);
-    _storage.write(
-        key: _dropboxTokenExpireKey, value: getTokenExpireTime(responseBody));
+    if (!isReAuth) {
+      String? newRefreshToken = responseBody["refresh_token"];
+      _storage.write(key: _dropboxRefreshTokenKey, value: newRefreshToken);
+    }
+    return responseBody["access_token"];
   }
 
   void _handleGenerateTokenErrors(final http.Response res) {
     if (res.headers["content-type"] != "application/json") {
       throw Exception("Invalid content-type for token");
     }
-  }
-
-  String getTokenExpireTime(Map<String, dynamic> responseBody) {
-    DateTime timeNow = DateTime.now();
-    print(responseBody["expires_in"].toString());
-    int expiresInMillis = responseBody["expires_in"] * 1000;
-    Duration expiresInDuration = Duration(milliseconds: expiresInMillis);
-    DateTime tokenExpireTime = timeNow.add(expiresInDuration);
-    return tokenExpireTime.millisecond.toString();
   }
 }

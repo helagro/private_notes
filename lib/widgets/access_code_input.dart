@@ -51,10 +51,9 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
   }
 
   void submitCode(BuildContext context) async {
-    await DropboxHandler.getAuth().generateToken(_controller.text);
+    await DropboxHandler.getAuth().aquireToken(_controller.text);
 
     if (!mounted) return;
     Navigator.pushNamed(context, "/editor");
-    //await dropboxHandler.upload(Note("titel", "coontent"));
   }
 }
