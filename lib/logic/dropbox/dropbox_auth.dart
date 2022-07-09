@@ -81,13 +81,15 @@ class DropboxAuth {
     Map<String, String> body = {
       "grant_type": isReAuth ? "refresh_token" : "authorization_code",
       "client_id": _appKey,
-      "code_verifier": _codeVerifier,
     };
 
     if (isReAuth) {
       body.addAll({"refresh_token": refreshToken});
     } else {
-      body.addAll({"code": authCode!});
+      body.addAll({
+        "code": authCode!,
+        "code_verifier": _codeVerifier,
+      });
     }
 
     http.Response res = await http
