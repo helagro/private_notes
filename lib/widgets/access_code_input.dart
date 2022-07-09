@@ -24,6 +24,7 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
           children: [
             Expanded(
               child: CupertinoTextField(
+                style: const TextStyle(fontSize: 13),
                 controller: _controller,
                 placeholder: "Enter access code here",
                 onChanged: onChanged,

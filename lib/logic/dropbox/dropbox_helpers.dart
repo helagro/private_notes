@@ -5,7 +5,7 @@ import '../../data_types/note.dart';
 
 class DropboxHelpers {
   static bool isResBodyJson(final http.Response res) {
-    return res.headers["content-type"] != "application/json";
+    return res.headers["content-type"] == "application/json";
   }
 
   static void printWrongResBodyFormat(http.Response response) {

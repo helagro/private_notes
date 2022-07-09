@@ -19,6 +19,7 @@ class DropboxErr {
 
   static void handleSharedErrors(http.Response response) {
     bool isJsonBody = DropboxHelpers.isResBodyJson(response);
+
     if (!isJsonBody) {
       Debug.formatHttpResponse(response, doPrint: true);
       return;

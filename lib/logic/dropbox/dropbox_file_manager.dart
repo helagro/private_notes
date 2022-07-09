@@ -9,11 +9,14 @@ import '../../data_types/note.dart';
 import 'package:http/http.dart' as http;
 
 class DropboxFileManager {
-  DropboxFileManager(this._token);
   static const _mainUrl = "https://api.dropboxapi.com/2/files";
   static const _contentUrl = "https://content.dropboxapi.com/2/files";
-  final Future<String?> _token;
+  late Future<String?> _token;
   bool hasListOfNotes = false;
+
+  void init(Future<String?> token) {
+    _token = token;
+  }
 
   Future<List<Note>> getNoteList(BuildContext context) async {
     Map<String, String> headers = {

@@ -22,6 +22,6 @@ class DropboxHandler {
   DropboxHandler(int code) {
     if (code != 19246) return;
     auth = DropboxAuth();
-    fileManager = DropboxFileManager(auth.getToken());
+    fileManager = DropboxFileManager();
   }
 }

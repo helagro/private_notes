@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:opnot/logic/debug.dart';
+import 'package:opnot/logic/dropbox/dropbox_err.dart';
+import 'package:opnot/logic/dropbox/dropbox_helpers.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -80,21 +82,16 @@ class DropboxAuth {
       "grant_type": isReAuth ? "refresh_token" : "authorization_code",
       "client_id": _appKey,
       "code_verifier": _codeVerifier,
-      "refresh_token": refreshToken ?? "",
-      "code": authCode ?? ""
     };
 
-    http.Response res;
-    Debug.log("care");
-    try {
-      res = await http.post(Uri.parse("https://api.dropbox.com/oauth2/token"),
-          body: body);
-      Debug.log("video games");
-    } catch (e) {
-      Debug.log("culture $e");
-      throw Exception("intresresfse");
+    if (isReAuth) {
+      body.addAll({"refresh_token": refreshToken});
+    } else {
+      body.addAll({"code": authCode!});
     }
-    Debug.log("msg");
+
+    http.Response res = await http
+        .post(Uri.parse("https://api.dropbox.com/oauth2/token"), body: body);
 
     if (res.statusCode != 200) {
       _handleGenerateTokenErrors(res);
@@ -106,12 +103,15 @@ class DropboxAuth {
       String? newRefreshToken = responseBody["refresh_token"];
       _storage.write(key: _dropboxRefreshTokenKey, value: newRefreshToken);
     }
+
+    Debug.log("Received token");
     return responseBody["access_token"];
   }
 
-  void _handleGenerateTokenErrors(final http.Response res) {
-    if (res.headers["content-type"] != "application/json") {
+  void _handleGenerateTokenErrors(final http.Response response) {
+    if (response.headers["content-type"] != "application/json") {
       throw Exception("Invalid content-type for token");
     }
+    Debug.formatHttpResponse(response, doPrint: true);
   }
 }
