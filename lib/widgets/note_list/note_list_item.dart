@@ -15,7 +15,9 @@ class NoteListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = isSelected ? Colors.white : Colors.yellow;
+    final backgroundColor = isSelected
+        ? Colors.white
+        : Theme.of(context).colorScheme.primaryContainer;
 
     return TextButton(
       style: TextButton.styleFrom(

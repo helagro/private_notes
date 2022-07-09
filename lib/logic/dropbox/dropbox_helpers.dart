@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:opnot/logic/debug.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,11 +10,6 @@ class DropboxHelpers {
 
   static void printWrongResBodyFormat(http.Response response) {
     Debug.log("Wrong result body format ${response.body}");
-  }
-
-  static String getErrorSummary(final http.Response res) {
-    final String error = jsonDecode(res.body)["error_summary"];
-    return error.replaceAll(RegExp(r"\/(\.\.\.)$"), "");
   }
 
   static getNoteFilePath(Note note) {

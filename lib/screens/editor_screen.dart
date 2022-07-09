@@ -21,7 +21,7 @@ class EditorScreen extends StatelessWidget {
   void handleDropbox(final BuildContext context) {
     DropboxHandler.getAuth().hasToken().then((hasToken) {
       if (hasToken) {
-        NoteHandler.loadNoteList();
+        NoteHandler.loadNoteList(context);
       } else {
         Navigator.pushNamed(context, "/login");
       }

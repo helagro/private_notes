@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         child: const Text(
-                          "This app uses Dropbox and will store the notes in it's own folder on your Dropbox account.",
+                          "This app uses Dropbox and will store the notes in it's own folder on your Dropbox account. It will NOT have access to any files outside of that folder.",
                           style: TextStyle(),
                           textAlign: TextAlign.center,
                         ),

@@ -50,9 +50,10 @@ class NoteHandler {
   }
 
   //ANCHOR note list editors
-  static void loadNoteList() async {
+  static void loadNoteList(BuildContext buildContext) async {
     notes.clear();
-    notes.addAll(await DropboxHandler.getFileManager().getNoteList());
+    notes.addAll(
+        await DropboxHandler.getFileManager().getNoteList(buildContext));
     callNoteListChangedListeners();
     loadCurrentNote();
   }

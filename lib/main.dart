@@ -18,9 +18,11 @@ class MyApp extends StatelessWidget {
       //navigatorKey: globalKey,
       //onGenerateRoute: (_) => null,
       theme: ThemeData(
-        // This is the theme of your application.
-        primarySwatch: Colors.blue,
-      ),
+          // This is the theme of your application.
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: const Color(0xFFF09515),
+              background: const Color(0xffffffff),
+              primaryContainer: const Color(0xFFFdfdfd))),
       routes: <String, WidgetBuilder>{
         "/login": (BuildContext context) => LoginScreen(),
         '/editor': (BuildContext context) => EditorScreen(),
