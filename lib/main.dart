@@ -8,14 +8,15 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  final GlobalKey globalKey = GlobalKey();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Private Notes',
-      //navigatorKey: globalKey,
+      navigatorKey: navigatorKey,
       //onGenerateRoute: (_) => null,
       theme: ThemeData(
           // This is the theme of your application.

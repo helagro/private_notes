@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:opnot/logic/debug.dart';
 import 'package:opnot/logic/note_handler.dart';
+import 'package:opnot/main.dart';
 import 'dart:convert';
 import '../../data_types/note.dart';
 import 'dropbox_helpers.dart';
@@ -28,7 +30,7 @@ class DropboxErr {
         Debug.log("do reauth");
         break;
       case "invalid_access_token/":
-        Debug.log("do auth");
+        MyApp.navigatorKey.currentState?.pushNamed("/login");
         break;
       default:
         Debug.formatHttpResponse(response, doPrint: true);

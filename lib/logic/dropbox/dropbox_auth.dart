@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class DropboxAuth {
   static const _appKey = "y4hmk1pjerg1vvp";
-  static const _dropboxTokenKey = "dropboxToken";
+  static const _dropboxRefreshTokenKey = "dropboxRefreshToken";
   static const _dropboxTokenExpireKey = "dropboxExpire";
 
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
@@ -18,7 +18,7 @@ class DropboxAuth {
   late Future<String?> _token;
 
   void readToken() async {
-    _token = _storage.read(key: _dropboxTokenKey);
+    _token = _storage.read(key: _dropboxRefreshTokenKey);
     refreshTokenIfNeeded();
   }
 
@@ -97,7 +97,7 @@ class DropboxAuth {
     Map<String, dynamic> responseBody = jsonDecode(res.body);
     _token = Future.value(responseBody["access_token"]);
 
-    _storage.write(key: _dropboxTokenKey, value: await _token);
+    _storage.write(key: _dropboxRefreshTokenKey, value: await _token);
     _storage.write(
         key: _dropboxTokenExpireKey, value: getTokenExpireTime(responseBody));
   }
@@ -110,8 +110,8 @@ class DropboxAuth {
 
   String getTokenExpireTime(Map<String, dynamic> responseBody) {
     DateTime timeNow = DateTime.now();
-    print(responseBody["expires_in"]);
-    int expiresInMillis = int.parse(responseBody["expires_in"]) * 1000;
+    print(responseBody["expires_in"].toString());
+    int expiresInMillis = responseBody["expires_in"] * 1000;
     Duration expiresInDuration = Duration(milliseconds: expiresInMillis);
     DateTime tokenExpireTime = timeNow.add(expiresInDuration);
     return tokenExpireTime.millisecond.toString();
