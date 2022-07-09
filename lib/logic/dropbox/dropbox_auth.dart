@@ -25,6 +25,7 @@ class DropboxAuth {
       return null;
     }
 
+    Debug.log("Found a stored refresh token");
     return await _requestToken(refreshToken: refreshToken);
   }
 
@@ -95,25 +96,13 @@ class DropboxAuth {
     http.Response res = await http
         .post(Uri.parse("https://api.dropbox.com/oauth2/token"), body: body);
 
-    if (res.statusCode != 200) {
-      _handleGenerateTokenErrors(res);
-      return null;
-    }
-
     Map<String, dynamic> responseBody = jsonDecode(res.body);
     if (!isReAuth) {
       String? newRefreshToken = responseBody["refresh_token"];
       _storage.write(key: _dropboxRefreshTokenKey, value: newRefreshToken);
     }
 
-    Debug.log("Received token");
+    Debug.log("Received access token");
     return responseBody["access_token"];
-  }
-
-  void _handleGenerateTokenErrors(final http.Response response) {
-    if (response.headers["content-type"] != "application/json") {
-      throw Exception("Invalid content-type for token");
-    }
-    Debug.formatHttpResponse(response, doPrint: true);
   }
 }
