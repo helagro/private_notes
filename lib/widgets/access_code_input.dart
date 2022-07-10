@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:opnot/widgets/icon_button_main.dart';
+import 'package:opnot/widgets/popups.dart';
 
 import '../logic/dropbox/dropbox_handler.dart';
 
@@ -54,6 +55,11 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
   void submitCode(BuildContext context) async {
     await DropboxHandler.getAuth().aquireToken(_controller.text);
 
+    if (!await DropboxHandler.getAuth().hasToken()) {
+      if (!mounted) return;
+      Popups.showErrorDialog(context, "Invalid access code");
+      return;
+    }
     if (!mounted) return;
     Navigator.pushNamed(context, "/editor");
   }
