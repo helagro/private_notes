@@ -18,8 +18,10 @@ class EditorOptionsMobile extends StatelessWidget {
           ),
           const Spacer(),
           IconButtonMain(
-              iconData: CupertinoIcons.trash,
-              onPressed: () => deleteNote(context))
+            iconData: CupertinoIcons.trash,
+            onPressed: () => deleteNote(context),
+            tooltip: "Delete note",
+          )
         ],
       ),
     );

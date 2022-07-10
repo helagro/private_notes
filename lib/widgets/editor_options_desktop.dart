@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../data_types/note.dart';
 import '../logic/note_handler.dart';
 import 'icon_button_main.dart';
 
 class EditorOptionsDesktop extends StatelessWidget {
+  const EditorOptionsDesktop({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,8 +14,10 @@ class EditorOptionsDesktop extends StatelessWidget {
       child: Row(
         children: [
           IconButtonMain(
-              iconData: CupertinoIcons.trash,
-              onPressed: () => deleteNote(context))
+            iconData: CupertinoIcons.trash,
+            onPressed: () => deleteNote(context),
+            tooltip: "Delete note",
+          )
         ],
       ),
     );

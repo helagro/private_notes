@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch().copyWith(
               primary: const Color(0xFFF09515),
               background: const Color(0xffffffff),
-              primaryContainer: const Color(0xFFFdfdfd))),
+              primaryContainer: const Color(0xFFFbfbfb))),
       routes: <String, WidgetBuilder>{
         "/login": (BuildContext context) => LoginScreen(),
         '/editor': (BuildContext context) => EditorScreen(),

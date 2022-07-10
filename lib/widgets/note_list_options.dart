@@ -26,8 +26,9 @@ class NoteListOptions extends StatelessWidget {
         ),
         const Spacer(),
         IconButtonMain(
-          iconData: CupertinoIcons.create,
+          iconData: CupertinoIcons.pencil,
           onPressed: addNote,
+          tooltip: "Add note",
         ),
       ]),
     );
