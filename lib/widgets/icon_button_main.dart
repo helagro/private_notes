@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/main.dart';
 
 class IconButtonMain extends StatelessWidget {
   const IconButtonMain(
@@ -12,6 +13,11 @@ class IconButtonMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: onPressed, icon: Icon(iconData), tooltip: tooltip);
+        onPressed: onPressed,
+        icon: Icon(
+          iconData,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        tooltip: tooltip);
   }
 }

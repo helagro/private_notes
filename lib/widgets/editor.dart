@@ -25,8 +25,8 @@ class _EditorWidgetState extends State<EditorWidget> {
     return Expanded(
         child: SizedBox.expand(
       child: Container(
-        padding: const EdgeInsets.all(30),
-        color: Colors.red,
+        padding: const EdgeInsets.all(10),
+        color: Theme.of(context).colorScheme.primaryContainer,
         // child: MarkdownFormField(
         //   emojiConvert: true,
         // )

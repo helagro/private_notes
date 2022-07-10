@@ -16,20 +16,33 @@ class NoteListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = isSelected
-        ? Colors.white
-        : Theme.of(context).colorScheme.primaryContainer;
+        ? Theme.of(context).colorScheme.tertiaryContainer
+        : Theme.of(context).colorScheme.secondaryContainer;
 
-    return TextButton(
-      style: TextButton.styleFrom(
-          textStyle: const TextStyle(fontSize: 24), padding: EdgeInsets.zero),
-      onPressed: () => onClick?.call(noteListIndex),
-      child: Container(
-        color: backgroundColor,
-        padding: const EdgeInsets.all(10),
-        child: Center(
-          child: Text(
-            NoteHandler.notes[noteListIndex].title,
-            style: const TextStyle(color: Colors.black),
+    if (NoteHandler.notes.isEmpty) return Container();
+
+    final String itemText = NoteHandler.notes[noteListIndex].title;
+
+    return Card(
+      elevation: isSelected ? 1 : 0.5,
+      margin: isSelected
+          ? const EdgeInsets.only(bottom: 2, right: 0, left: 0, top: 0.1)
+          : const EdgeInsets.all(0),
+      child: TextButton(
+        style: TextButton.styleFrom(
+            textStyle: const TextStyle(fontSize: 24), padding: EdgeInsets.zero),
+        onPressed: () => onClick?.call(noteListIndex),
+        child: Container(
+          color: backgroundColor,
+          padding: isSelected
+              ? const EdgeInsets.all(10)
+              : const EdgeInsets.only(
+                  bottom: 12, right: 10, left: 10, top: 10.1),
+          child: Center(
+            child: Text(
+              itemText,
+              style: const TextStyle(color: Colors.black),
+            ),
           ),
         ),
       ),

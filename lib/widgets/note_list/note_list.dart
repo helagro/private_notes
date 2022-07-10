@@ -32,7 +32,7 @@ class _NoteListState extends State<NoteList> {
     return Expanded(
         child: SizedBox.expand(
       child: Container(
-        color: Colors.blue,
+        color: Theme.of(context).colorScheme.background,
         child: NoteListContent(
           onNoteListItemClicked: onNoteListItemClicked,
           highlightSelectedNote: widget.highlightSelectedNote,

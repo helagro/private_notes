@@ -45,8 +45,9 @@ class NoteListContent extends StatelessWidget {
   }
 
   void onKey(RawKeyEvent event) {
-    if (DateTime.now().millisecondsSinceEpoch < _lastKeyboardInputTime + 150)
-      return;
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
+    if (currentTime < _lastKeyboardInputTime + 150) return;
+
     final int selectedNoteI = NoteHandler.selectedNoteI.value;
     switch (event.logicalKey.keyLabel) {
       case "Arrow Down":
@@ -60,7 +61,6 @@ class NoteListContent extends StatelessWidget {
       default:
         return;
     }
-    _lastKeyboardInputTime = DateTime.now().millisecondsSinceEpoch;
-    print("chicken $_lastKeyboardInputTime");
+    _lastKeyboardInputTime = currentTime;
   }
 }
