@@ -4,8 +4,6 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:opnot/logic/debug.dart';
-import 'package:opnot/logic/dropbox/dropbox_err.dart';
-import 'package:opnot/logic/dropbox/dropbox_helpers.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -104,5 +102,10 @@ class DropboxAuth {
 
     Debug.log("Received access token");
     return responseBody["access_token"];
+  }
+
+  void logOut() {
+    _storage.delete(key: _dropboxRefreshTokenKey);
+    _token = Future.value(null);
   }
 }
