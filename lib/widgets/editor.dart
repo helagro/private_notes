@@ -15,6 +15,7 @@ class EditorWidget extends StatefulWidget {
 class _EditorWidgetState extends State<EditorWidget> {
   final _textEditingController = TextEditingController();
   static final int _noteListChangedListenerId = UniqueKey().hashCode;
+  String lastSavedText = "";
 
   _EditorWidgetState() {
     NoteHandler.selectedNoteI.addListener(fillWithNoteContent);
@@ -29,7 +30,7 @@ class _EditorWidgetState extends State<EditorWidget> {
     return Expanded(
         child: SizedBox.expand(
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         color: Theme.of(context).colorScheme.primaryContainer,
         // child: MarkdownFormField(
         //   emojiConvert: true,
@@ -39,6 +40,7 @@ class _EditorWidgetState extends State<EditorWidget> {
             maxLines: null,
             controller: _textEditingController,
             onChanged: onTextChange,
+            scrollPadding: const EdgeInsets.all(0),
             minLines: 2,
             decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -60,10 +62,11 @@ class _EditorWidgetState extends State<EditorWidget> {
 
   void autoSaveTimer() async {
     Note? note = NoteHandler.getCurrentNote();
-    if (note != null) {
-      DropboxHandler.getFileManager().upload(NoteHandler.getCurrentNote()!);
+    if (note != null && lastSavedText != note.content) {
+      DropboxHandler.getFileManager().upload(note);
+      lastSavedText = note.content;
     }
-    Future.delayed(const Duration(minutes: 3), autoSaveTimer);
+    Future.delayed(const Duration(minutes: 10), autoSaveTimer);
   }
 
   @override

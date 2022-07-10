@@ -29,6 +29,7 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
                 controller: _controller,
                 placeholder: "Enter access code here",
                 onChanged: onChanged,
+                onSubmitted: (value) => submitCode(context),
               ),
             ),
             authCodeFormatIsValid

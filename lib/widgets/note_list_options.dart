@@ -36,6 +36,7 @@ class NoteListOptions extends StatelessWidget {
 
   void logOut(BuildContext context) {
     DropboxHandler.getAuth().logOut();
+    print("back ${MyApp.navigatorKey.currentState}");
     MyApp.navigatorKey.currentState?.popAndPushNamed("/login");
   }
 
