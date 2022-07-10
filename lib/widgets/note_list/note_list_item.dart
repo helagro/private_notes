@@ -27,7 +27,7 @@ class NoteListItem extends StatelessWidget {
     return Card(
       elevation: isSelected ? 1 : 0.5,
       margin: isSelected
-          ? const EdgeInsets.only(bottom: 2, right: 0, left: 0, top: 0.2)
+          ? const EdgeInsets.only(bottom: 2, right: 1, left: 0, top: 0.2)
           : const EdgeInsets.all(0),
       child: TextButton(
         style: TextButton.styleFrom(
