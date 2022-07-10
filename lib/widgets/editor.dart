@@ -62,7 +62,6 @@ class _EditorWidgetState extends State<EditorWidget> {
     Note? note = NoteHandler.getCurrentNote();
     if (note != null) {
       DropboxHandler.getFileManager().upload(NoteHandler.getCurrentNote()!);
-      Debug.log("Auto saving ”${NoteHandler.getCurrentNote()!.title}”");
     }
     Future.delayed(const Duration(minutes: 3), autoSaveTimer);
   }
