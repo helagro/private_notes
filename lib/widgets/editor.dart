@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/logic/debug.dart';
 import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/logic/note_handler.dart';
+
+import '../data_types/note.dart';
 
 class EditorWidget extends StatefulWidget {
   const EditorWidget({Key? key}) : super(key: key);
@@ -18,6 +21,7 @@ class _EditorWidgetState extends State<EditorWidget> {
     NoteHandler.addNoteListChangedListener(
         fillWithNoteContent, _noteListChangedListenerId);
     fillWithNoteContent();
+    autoSaveTimer();
   }
 
   @override
@@ -52,6 +56,15 @@ class _EditorWidgetState extends State<EditorWidget> {
 
   void onTextChange(final String text) {
     NoteHandler.getCurrentNote()?.content = text;
+  }
+
+  void autoSaveTimer() async {
+    Note? note = NoteHandler.getCurrentNote();
+    if (note != null) {
+      DropboxHandler.getFileManager().upload(NoteHandler.getCurrentNote()!);
+      Debug.log("Auto saving ”${NoteHandler.getCurrentNote()!.title}”");
+    }
+    Future.delayed(const Duration(minutes: 3), autoSaveTimer);
   }
 
   @override

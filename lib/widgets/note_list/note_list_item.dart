@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/res/colors_main.dart';
 import '../../logic/note_handler.dart';
 
 class NoteListItem extends StatelessWidget {
@@ -26,7 +27,7 @@ class NoteListItem extends StatelessWidget {
     return Card(
       elevation: isSelected ? 1 : 0.5,
       margin: isSelected
-          ? const EdgeInsets.only(bottom: 2, right: 0, left: 0, top: 0.1)
+          ? const EdgeInsets.only(bottom: 2, right: 0, left: 0, top: 0.2)
           : const EdgeInsets.all(0),
       child: TextButton(
         style: TextButton.styleFrom(
@@ -37,11 +38,14 @@ class NoteListItem extends StatelessWidget {
           padding: isSelected
               ? const EdgeInsets.all(10)
               : const EdgeInsets.only(
-                  bottom: 12, right: 10, left: 10, top: 10.1),
+                  bottom: 12, right: 10, left: 10, top: 10.2),
           child: Center(
             child: Text(
               itemText,
-              style: const TextStyle(color: Colors.black),
+              style: TextStyle(
+                  color: isSelected
+                      ? ColorsMain.textColorElevated
+                      : ColorsMain.textColor),
             ),
           ),
         ),
