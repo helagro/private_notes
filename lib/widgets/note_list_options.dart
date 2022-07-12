@@ -23,12 +23,12 @@ class NoteListOptions extends StatelessWidget {
         itemBuilder: (BuildContext context) => [
           PopupMenuItem(
               onTap: (() {
-                //Navigator.of(context).pop();
-                var route = Navigator.pushNamed(context, "/login");
-                route.then((value) {
+                Navigator.of(context).pop();
+                var route =
+                    MyApp.navigatorKey.currentState?.pushNamed("/settings");
+                route?.then((value) {
                   print("  $value  val");
                 });
-                print("settings to ${Navigator.of(context)}    $route");
               }),
               child: const Text("Settings")),
           PopupMenuItem(
@@ -46,7 +46,8 @@ class NoteListOptions extends StatelessWidget {
 
   void logOut(BuildContext context) {
     DropboxHandler.getAuth().logOut();
-    MyApp.navigatorKey.currentState?.popAndPushNamed("/login");
+    Navigator.of(context).pop();
+    MyApp.navigatorKey.currentState?.pushNamed("/login");
   }
 
   void addNote() {
