@@ -52,7 +52,7 @@ class _EditorWidgetState extends State<EditorWidget> {
     ));
   }
 
-  void fillWithNoteContent() {
+  void fillWithNoteContent() async {
     _textEditingController.text = NoteHandler.getCurrentNote()?.content ?? "";
   }
 

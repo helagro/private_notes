@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/screens/login_screen.dart';
 import 'package:opnot/screens/mobile/editor_screen_mobile.dart';
+import 'package:opnot/screens/settings_screen.dart';
 
 import 'note_list_screen_mobile.dart';
 
@@ -32,7 +34,9 @@ class EditorAndListMobile extends StatelessWidget {
                   builder = (BuildContext _) => const EditorScreenMobile();
                   break;
                 default:
-                  throw Exception("Invalid route");
+                  print("faefaegea");
+                  builder = (BuildContext _) => LoginScreen(); //TMP!
+                  break;
               }
 
               return MaterialPageRoute<void>(
