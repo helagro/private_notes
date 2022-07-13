@@ -17,14 +17,14 @@ class EditorScreenDesktop extends StatelessWidget {
         children: [
           ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 320),
-              child: Column(children: const [NoteListOptions(), NoteList()])),
+              child: Column(children: [NoteListOptions(), const NoteList()])),
           Container(
             width: 1,
             color: Theme.of(context).colorScheme.background,
           ),
           Expanded(
               child: Column(
-                  children: [EditorOptionsDesktop(), const EditorWidget()]))
+                  children: const [EditorOptionsDesktop(), EditorWidget()]))
         ],
       ),
     ));

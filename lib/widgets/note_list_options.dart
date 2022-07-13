@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:opnot/data_types/note.dart';
 import 'package:opnot/logic/dropbox/dropbox_handler.dart';
@@ -9,8 +11,9 @@ import 'package:flutter/cupertino.dart';
 
 class NoteListOptions extends StatelessWidget {
   final Function? onNoteAddedListener;
+  Function()? onSelected;
 
-  const NoteListOptions({Key? key, this.onNoteAddedListener}) : super(key: key);
+  NoteListOptions({Key? key, this.onNoteAddedListener}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +26,16 @@ class NoteListOptions extends StatelessWidget {
         itemBuilder: (BuildContext context) => [
           PopupMenuItem(
               onTap: (() {
-                Navigator.of(context).pop();
-                var route =
-                    MyApp.navigatorKey.currentState?.pushNamed("/settings");
-                route?.then((value) {
-                  print("  $value  val");
-                });
+                onSelected = goToSettings;
               }),
               child: const Text("Settings")),
           PopupMenuItem(
-              onTap: (() => logOut(context)), child: const Text("Log out"))
+              onTap: (() {
+                onSelected = () => logOut(context);
+              }),
+              child: const Text("Log out"))
         ],
+        onCanceled: () => onSelected?.call(),
       ),
       const Spacer(),
       IconButtonMain(
@@ -44,9 +46,12 @@ class NoteListOptions extends StatelessWidget {
     ]);
   }
 
+  void goToSettings() {
+    MyApp.navigatorKey.currentState?.pushNamed("/settings");
+  }
+
   void logOut(BuildContext context) {
     DropboxHandler.getAuth().logOut();
-    Navigator.of(context).pop();
     MyApp.navigatorKey.currentState?.pushNamed("/login");
   }
 
