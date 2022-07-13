@@ -80,7 +80,7 @@ class DropboxFileManager {
       return;
     }
 
-    note.content = response.body;
+    note.content = utf8.decode(response.bodyBytes);
     note.isLoaded = true;
     Debug.log("Downloaded note content for ”${note.title}\"");
   }
@@ -95,8 +95,7 @@ class DropboxFileManager {
     Map<String, String> headers = {
       "Authorization": "Bearer ${await _token}",
       "Dropbox-API-Arg": jsonEncode(dropboxAPIArg),
-      "Content-Type": "text/plain; charset=dropbox-cors-hack",
-      "Accept": "text/plain; charset=dropbox-cors-hack"
+      "Content-Type": "application/octet-stream",
     };
 
     http.Response response = await http.post(Uri.parse("$_contentUrl/upload"),
