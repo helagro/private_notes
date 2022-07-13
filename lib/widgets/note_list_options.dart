@@ -35,7 +35,10 @@ class NoteListOptions extends StatelessWidget {
               }),
               child: const Text("Log out"))
         ],
-        onCanceled: () => onSelected?.call(),
+        onCanceled: () {
+          onSelected?.call();
+          onSelected = null;
+        },
       ),
       const Spacer(),
       IconButtonMain(
