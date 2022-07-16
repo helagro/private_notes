@@ -27,6 +27,7 @@ class NoteListContent extends StatelessWidget {
     }
 
     return RawKeyboardListener(
+      autofocus: true,
       focusNode: FocusNode(),
       onKey: highlightSelectedNote ? onKey : (_) {},
       child: ListView.builder(

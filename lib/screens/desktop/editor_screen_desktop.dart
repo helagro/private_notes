@@ -17,7 +17,7 @@ class EditorScreenDesktop extends StatelessWidget {
       child: Row(
         children: [
           ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 320),
+              constraints: const BoxConstraints(maxWidth: 280),
               child: AppBarContainer(
                 appBar: NoteListOptions(),
                 content: const NoteList(),
