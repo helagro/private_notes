@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/widgets/app_bar_container.dart';
 import 'package:opnot/widgets/editor_options_mobile.dart';
 import '../../widgets/editor.dart';
 
@@ -9,7 +10,8 @@ class EditorScreenMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Column(children: [EditorOptionsMobile(), EditorWidget()]),
+      child: AppBarContainer(
+          content: const EditorWidget(), appBar: EditorOptionsMobile()),
     ));
   }
 }

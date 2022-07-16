@@ -27,29 +27,26 @@ class _EditorWidgetState extends State<EditorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: SizedBox.expand(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        color: Theme.of(context).colorScheme.primaryContainer,
-        // child: MarkdownFormField(
-        //   emojiConvert: true,
-        // )
-        child: TextField(
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            controller: _textEditingController,
-            onChanged: onTextChange,
-            scrollPadding: const EdgeInsets.all(0),
-            minLines: 2,
-            decoration: const InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none)),
-      ),
-    ));
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      color: Theme.of(context).colorScheme.primaryContainer,
+      // child: MarkdownFormField(
+      //   emojiConvert: true,
+      // )
+      child: TextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          controller: _textEditingController,
+          onChanged: onTextChange,
+          scrollPadding: const EdgeInsets.all(0),
+          minLines: 2,
+          decoration: const InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none)),
+    );
   }
 
   void fillWithNoteContent() async {

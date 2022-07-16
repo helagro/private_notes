@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:opnot/main.dart';
 import 'package:opnot/res/colors_main.dart';
+import 'package:opnot/widgets/action_button.dart';
 import 'package:opnot/widgets/app_bar_main.dart';
 import 'package:opnot/widgets/icon_button_main.dart';
+import 'package:opnot/widgets/input_row.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -42,29 +43,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Container(
                     margin: const EdgeInsets.all(15),
                     child: Column(
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Flexible(
-                              child: Text(
-                                "Encryption password",
-                                softWrap: true,
-                                style: TextStyle(fontSize: 18),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Expanded(
-                              child: CupertinoTextField(
-                                keyboardType: TextInputType.visiblePassword,
-                                obscureText: true,
-                              ),
-                            )
-                          ],
-                        ),
+                      children: const [
+                        InputRow(
+                            labelText: "Encryption password",
+                            inputWidget: CupertinoTextField(
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: true,
+                            )),
                       ],
                     )),
                 const Spacer(),
@@ -72,23 +57,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SizedBox(
-                      height: 50,
-                      width: 120,
-                      child: TextButton(
-                          onPressed: () {
-                            print("save");
-                          },
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                  const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.zero)),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer)),
-                          child: const Text("Save",
-                              style: TextStyle(fontSize: 16))),
-                    )
+                        height: 50,
+                        width: 120,
+                        child: ActionButton(
+                          title: "Save",
+                          onPressed: save,
+                        ))
                   ],
                 )
               ],
@@ -98,4 +72,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       )),
     );
   }
+
+  void save() {}
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/widgets/app_bar_container.dart';
 import 'package:opnot/widgets/editor_options_desktop.dart';
 
 import '../../widgets/editor.dart';
@@ -17,14 +18,17 @@ class EditorScreenDesktop extends StatelessWidget {
         children: [
           ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 320),
-              child: Column(children: [NoteListOptions(), const NoteList()])),
+              child: AppBarContainer(
+                appBar: NoteListOptions(),
+                content: const NoteList(),
+              )),
           Container(
             width: 1,
             color: Theme.of(context).colorScheme.background,
           ),
-          Expanded(
-              child: Column(
-                  children: const [EditorOptionsDesktop(), EditorWidget()]))
+          const Expanded(
+              child: AppBarContainer(
+                  content: EditorWidget(), appBar: EditorOptionsDesktop()))
         ],
       ),
     ));

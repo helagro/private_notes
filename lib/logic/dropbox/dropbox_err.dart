@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:opnot/logic/debug.dart';
+import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/logic/note_handler.dart';
 import 'package:opnot/main.dart';
 import 'dart:convert';
@@ -28,7 +29,7 @@ class DropboxErr {
 
     switch (err) {
       case "expired_access_token/":
-        Debug.log("do reauth");
+        DropboxHandler.getAuth(); //get token
         break;
       case "invalid_access_token/":
         MyApp.navigatorKey.currentState?.pushNamed("/login");

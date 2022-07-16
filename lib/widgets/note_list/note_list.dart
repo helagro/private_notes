@@ -29,16 +29,13 @@ class _NoteListState extends State<NoteList> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: SizedBox.expand(
-      child: Container(
-        color: Theme.of(context).colorScheme.background,
-        child: NoteListContent(
-          onNoteListItemClicked: onNoteListItemClicked,
-          highlightSelectedNote: widget.highlightSelectedNote,
-        ),
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: NoteListContent(
+        onNoteListItemClicked: onNoteListItemClicked,
+        highlightSelectedNote: widget.highlightSelectedNote,
       ),
-    ));
+    );
   }
 
   void onNoteListItemClicked(int noteListIndex) {
