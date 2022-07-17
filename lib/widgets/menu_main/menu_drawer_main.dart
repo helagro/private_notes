@@ -11,7 +11,19 @@ class MenuDrawerMain extends StatelessWidget {
   Widget build(BuildContext context) {
     print("built");
     return Drawer(
-      child: Text("family"),
+      width: 200,
+      child: Container(
+        margin: const EdgeInsets.only(top: 30),
+        child: Column(
+          children: const [
+            TextButton(
+                onPressed: NavigationFunctions.goToSettings,
+                child: Text("Settings")),
+            TextButton(
+                onPressed: NavigationFunctions.logOut, child: Text("Log out"))
+          ],
+        ),
+      ),
     );
   }
 }

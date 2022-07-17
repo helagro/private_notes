@@ -12,15 +12,14 @@ class NoteListScreenMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-            child: AppBarContainer(
+    return SafeArea(
+        child: AppBarContainer(
       content: NoteList(
         onNoteSelected: () => goToEditor(context),
         highlightSelectedNote: false,
       ),
       appBar: NoteListOptions(onNoteAddedListener: () => goToEditor(context)),
-    )));
+    ));
   }
 
   void goToEditor(context) {
