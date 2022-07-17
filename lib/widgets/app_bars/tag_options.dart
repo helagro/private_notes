@@ -17,7 +17,9 @@ class TagOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBarMain(children: [MenuMainPopup()]);
+    return const AppBarMain(
+      children: [],
+    );
   }
 
   void addNote() {

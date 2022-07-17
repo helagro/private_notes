@@ -5,6 +5,8 @@ import 'package:opnot/widgets/app_bars/app_bar_container.dart';
 import 'package:opnot/widgets/app_bars/app_bar_main.dart';
 import 'package:opnot/widgets/app_bars/editor_options_desktop.dart';
 import 'package:opnot/widgets/app_bars/tag_options.dart';
+import 'package:opnot/widgets/menu_main/menu_content.dart';
+import 'package:opnot/widgets/menu_main/menu_widget.dart';
 import 'package:opnot/widgets/tag_list.dart';
 import 'package:opnot/widgets/tag_list_item.dart';
 
@@ -29,7 +31,7 @@ class EditorScreenDesktop extends StatelessWidget {
             return ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: Dimensions.tagListWidth),
                 child: AppBarContainer(
-                  content: TagList(),
+                  content: const MenuWidget(),
                   appBar: TagOptions(),
                 ));
           })),

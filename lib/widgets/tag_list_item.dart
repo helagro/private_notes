@@ -17,7 +17,7 @@ class TagListItem extends StatelessWidget {
     return Row(
       children: [
         ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: Dimensions.tagListWidth),
+          constraints: BoxConstraints(maxWidth: Dimensions.tagListWidth - 20),
           child: Card(
             elevation: Dimensions.elevation6,
             margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),

@@ -12,7 +12,7 @@ class EditorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     handleDropbox(context);
     return Scaffold(
-      drawer: const MenuDrawerMain(),
+      drawer: MenuDrawerMain(),
       body: LayoutBuilder(builder: ((context, constraints) {
         if (constraints.maxWidth > 750) {
           return const EditorScreenDesktop();

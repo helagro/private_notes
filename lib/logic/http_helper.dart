@@ -8,6 +8,7 @@ Future<http.Response?> post(String url,
     http.Response response =
         await http.post(Uri.parse(url), headers: headers, body: body);
     return response;
-  } on SocketException {}
+  } on SocketException {
+  } on HandshakeException {}
   return null;
 }
