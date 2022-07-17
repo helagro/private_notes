@@ -17,13 +17,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: ColorsMain.background,
       body: SafeArea(
           child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 450, maxHeight: 300),
           child: Container(
-            color: Theme.of(context).colorScheme.primaryContainer,
+            color: ColorsMain.primaryContainer,
             margin: const EdgeInsets.only(bottom: 20),
             child: Column(
               children: [

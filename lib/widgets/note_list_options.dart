@@ -5,6 +5,7 @@ import 'package:opnot/data_types/note.dart';
 import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/logic/note_handler.dart';
 import 'package:opnot/main.dart';
+import 'package:opnot/res/colors_main.dart';
 import 'package:opnot/widgets/app_bar_main.dart';
 import 'package:opnot/widgets/icon_button_main.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +22,7 @@ class NoteListOptions extends StatelessWidget {
       PopupMenuButton(
         icon: Icon(
           Icons.more_vert,
-          color: Theme.of(context).colorScheme.primary,
+          color: ColorsMain.primary,
         ),
         itemBuilder: (BuildContext context) => [
           PopupMenuItem(

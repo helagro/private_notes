@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opnot/logic/note_handler.dart';
+import 'package:opnot/res/colors_main.dart';
 import 'package:opnot/widgets/note_list/note_list_content.dart';
 
 class NoteList extends StatefulWidget {
@@ -30,7 +31,7 @@ class _NoteListState extends State<NoteList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.background,
+      color: ColorsMain.background,
       child: NoteListContent(
         onNoteListItemClicked: onNoteListItemClicked,
         highlightSelectedNote: widget.highlightSelectedNote,

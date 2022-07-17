@@ -18,8 +18,8 @@ class NoteListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = isSelected
-        ? Theme.of(context).colorScheme.tertiaryContainer
-        : Theme.of(context).colorScheme.secondaryContainer;
+        ? ColorsMain.tertiaryContainer
+        : ColorsMain.secondaryContainer;
 
     if (NoteHandler.notes.isEmpty) return Container();
 

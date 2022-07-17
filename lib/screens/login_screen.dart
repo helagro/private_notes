@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/main.dart';
+import 'package:opnot/res/colors_main.dart';
 import 'package:opnot/widgets/access_code_input.dart';
 
 import '../data_types/note.dart';
@@ -37,8 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(
                           "Opnot",
                           style: TextStyle(
-                              fontSize: 30,
-                              color: Theme.of(context).colorScheme.primary),
+                              fontSize: 30, color: ColorsMain.primary),
                         ),
                       ),
                       Container(

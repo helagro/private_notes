@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opnot/res/colors_main.dart';
 import 'package:opnot/screens/editor_screen.dart';
 import 'package:opnot/screens/login_screen.dart';
 import 'package:opnot/screens/settings_screen.dart';
@@ -22,11 +23,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           // This is the theme of your application.
           colorScheme: ColorScheme.fromSwatch().copyWith(
-            primary: Color.fromARGB(255, 152, 76, 18),
-            background: Color.fromARGB(255, 240, 240, 240),
-            primaryContainer: Color.fromARGB(255, 248, 248, 248),
-            secondaryContainer: Color.fromARGB(255, 253, 253, 253),
-            tertiaryContainer: const Color(0xffffffff),
+            primary: ColorsMain.primary,
+            background: ColorsMain.background,
+            primaryContainer: ColorsMain.primaryContainer,
+            secondaryContainer: ColorsMain.secondaryContainer,
+            tertiaryContainer: ColorsMain.tertiaryContainer,
           ),
           textTheme:
               const TextTheme(headline1: TextStyle(fontSize: 30, height: 40))),

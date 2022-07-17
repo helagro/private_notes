@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opnot/main.dart';
+import 'package:opnot/res/colors_main.dart';
 
 class IconButtonMain extends StatelessWidget {
   const IconButtonMain(
@@ -16,7 +17,7 @@ class IconButtonMain extends StatelessWidget {
         onPressed: onPressed,
         icon: Icon(
           iconData,
-          color: Theme.of(context).colorScheme.primary,
+          color: ColorsMain.primary,
         ),
         tooltip: tooltip);
   }

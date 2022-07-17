@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:opnot/logic/debug.dart';
 import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/logic/note_handler.dart';
+import 'package:opnot/res/colors_main.dart';
 
 import '../data_types/note.dart';
 
@@ -29,7 +30,7 @@ class _EditorWidgetState extends State<EditorWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      color: Theme.of(context).colorScheme.primaryContainer,
+      color: ColorsMain.primaryContainer,
       // child: MarkdownFormField(
       //   emojiConvert: true,
       // )
