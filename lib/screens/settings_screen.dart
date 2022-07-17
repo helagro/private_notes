@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:opnot/res/colors_main.dart';
 import 'package:opnot/widgets/action_button.dart';
-import 'package:opnot/widgets/app_bar_main.dart';
+import 'package:opnot/widgets/app_bars/app_bar_main.dart';
 import 'package:opnot/widgets/icon_button_main.dart';
 import 'package:opnot/widgets/input_row.dart';
 

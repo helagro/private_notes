@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:opnot/logic/dropbox/dropbox_handler.dart';
 import 'package:opnot/logic/note_handler.dart';
+import 'package:opnot/widgets/menu_main/menu_drawer_main.dart';
 import 'desktop/editor_screen_desktop.dart';
 import 'mobile/editor_and_list_mobile.dart';
 
 class EditorScreen extends StatelessWidget {
-  EditorScreen({Key? key}) : super(key: key);
+  const EditorScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     handleDropbox(context);
-    return LayoutBuilder(builder: ((context, constraints) {
-      if (constraints.maxWidth > 750) {
-        return const EditorScreenDesktop();
-      }
-      return EditorAndListMobile();
-    }));
+    return Scaffold(
+      drawer: const MenuDrawerMain(),
+      body: LayoutBuilder(builder: ((context, constraints) {
+        if (constraints.maxWidth > 750) {
+          return const EditorScreenDesktop();
+        }
+        return EditorAndListMobile();
+      })),
+    );
   }
 
   void handleDropbox(final BuildContext context) {

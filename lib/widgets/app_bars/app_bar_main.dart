@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opnot/res/dimensions.dart';
 
-import 'icon_button_main.dart';
+import '../icon_button_main.dart';
 
 class AppBarMain extends StatelessWidget {
   const AppBarMain({Key? key, required this.children}) : super(key: key);
